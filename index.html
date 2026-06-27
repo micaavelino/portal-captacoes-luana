@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Portal LG Imóveis">
+<meta name="description" content="Sistema interno de captações — Luàna Guedes Imóveis CRECI/PI 4114">
+<title>Portal Luàna Guedes Imóveis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
+<style>
+:root {
+  --amber: #ccb363;
+  --amber-d: #aa9040;
+  --bg: #f5f4f0;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --muted: #777;
+  --border: #e0ddd5;
+  --danger: #e53e3e;
+  --green: #15803d;
+  --r: 10px;
+  --sh: 0 2px 14px rgba(0,0,0,0.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── LOGIN ───────────────────────────────────────────── */
+#s-login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-box{background:var(--card);border-radius:16px;padding:40px 32px;width:100%;max-width:380px;box-shadow:var(--sh);text-align:center}
+.login-logo{margin-bottom:16px}
+.login-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.err{color:var(--danger);font-size:13px;margin-top:8px;min-height:18px}
+
+/* ── SETUP ───────────────────────────────────────────── */
+#s-setup{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px}
+.setup-box{background:var(--card);border-radius:16px;padding:36px 32px;width:100%;max-width:480px;box-shadow:var(--sh)}
+.setup-box h2{font-size:20px;font-weight:800;margin-bottom:6px}
+.setup-box p{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--amber);color:#fff;border-radius:50%;font-size:12px;font-weight:700;margin-right:8px;flex-shrink:0}
+.setup-step{display:flex;align-items:flex-start;gap:0;margin-bottom:20px;padding:14px;background:var(--bg);border-radius:8px;font-size:13px;line-height:1.5}
+.setup-step a{color:var(--amber-d);font-weight:600}
+.setup-fields{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.setup-hint{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ── APP ─────────────────────────────────────────────── */
+#s-app{display:none;flex-direction:column;min-height:100vh}
+.hdr{background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:12px;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.hdr-logo{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.hdr-logo span{color:var(--amber)}
+.hdr-space{flex:1}
+.hdr-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--muted);transition:all .15s}
+.hdr-btn:hover{border-color:var(--amber);color:var(--amber-d)}
+
+.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{padding:13px 18px;font-size:14px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);white-space:nowrap;transition:all .2s;user-select:none}
+.tab.on{color:var(--amber-d);border-bottom-color:var(--amber)}
+
+.panel{display:none;flex:1;overflow-y:auto}
+.panel.on{display:block}
+.pad{padding:20px;max-width:960px;margin:0 auto}
+
+/* ── SHARED INPUTS ───────────────────────────────────── */
+.inp{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:7px;font-size:14px;outline:none;transition:border-color .15s;background:var(--bg);font-family:inherit;color:var(--text)}
+.inp:focus{border-color:var(--amber);background:#fff}
+select.inp{cursor:pointer}
+textarea.inp{resize:vertical;min-height:72px}
+.lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;display:block}
+.fg{display:flex;flex-direction:column;gap:4px}
+.row{display:grid;gap:12px;margin-bottom:12px}
+.r2{grid-template-columns:1fr 1fr}
+.r3{grid-template-columns:1fr 1fr 1fr}
+
+.btn{padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-amber{background:var(--amber);color:#fff}
+.btn-amber:hover{background:var(--amber-d)}
+.btn-outline{background:#fff;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--amber);color:var(--amber-d)}
+.btn-sm{padding:7px 14px;font-size:13px;border-radius:6px}
+.btn-full{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── SEARCH BAR ──────────────────────────────────────── */
+.search-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.search-bar .inp{flex:1;min-width:200px}
+.search-bar select.inp{max-width:160px}
+
+/* ── CAPTAÇÕES GRID ──────────────────────────────────── */
+.cap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.cap-card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--sh);cursor:pointer;transition:transform .15s,box-shadow .15s;border:1px solid var(--border)}
+.cap-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.cap-ref{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.cap-tipo{font-size:17px;font-weight:700;margin-bottom:2px}
+.cap-local{font-size:13px;color:var(--muted);margin-bottom:10px}
+.cap-valor{font-size:15px;font-weight:700;color:var(--amber-d);margin-bottom:8px}
+.cap-footer{display:flex;align-items:center;justify-content:space-between}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;gap:4px}
+.b-ativa{background:#dcfce7;color:#15803d}
+.b-vendida{background:#dbeafe;color:#1d4ed8}
+.b-arquivada{background:#f1f5f9;color:#64748b}
+.cap-date{font-size:11px;color:var(--muted)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-state h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:48px;color:var(--muted)}
+.spin{width:22px;height:22px;border:2px solid #ddd;border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FORM ────────────────────────────────────────────── */
+.form-wrap{max-width:720px;margin:0 auto}
+.sec{background:var(--card);border-radius:var(--r);padding:22px;margin-bottom:14px;box-shadow:var(--sh)}
+.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amber-d);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:7px;margin-top:4px}
+.chk{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px;transition:all .12s;user-select:none}
+.chk:hover{border-color:var(--amber);background:#fdf9ef}
+.chk input{accent-color:var(--amber);width:15px;height:15px;flex-shrink:0}
+.chk.on{border-color:var(--amber);background:#fdf9ef}
+.radios{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.rdo{display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px;transition:all .12s;user-select:none}
+.rdo input[type=radio]{accent-color:var(--amber)}
+.rdo:has(input:checked){border-color:var(--amber);background:#fdf9ef}
+.section-note{font-size:12px;color:var(--muted);background:#fdf9ef;border:1px solid #e8d68a;border-radius:6px;padding:8px 12px;margin-bottom:14px}
+
+/* ── SIGNATURE ───────────────────────────────────────── */
+.sig-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.sig-bar{padding:7px 12px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
+.sig-canvas{width:100%;display:block;touch-action:none;cursor:crosshair;background:#fff}
+.btn-clr{background:none;border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:12px;cursor:pointer;color:var(--muted)}
+.btn-clr:hover{border-color:var(--danger);color:var(--danger)}
+
+/* ── PHOTOS ──────────────────────────────────────────── */
+.drop-zone{border:2px dashed var(--border);border-radius:8px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;font-size:14px;color:var(--muted)}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--amber);background:#fdf9ef;color:var(--amber-d)}
+.drop-zone .drop-icon{font-size:32px;margin-bottom:8px}
+.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:12px}
+.thumb{position:relative;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);border:none;border-radius:50%;width:20px;height:20px;color:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* ── DETAIL OVERLAY ──────────────────────────────────── */
+#ov-detail{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch}
+.detail-box{background:var(--card);border-radius:16px;max-width:720px;margin:0 auto;padding:28px;position:relative}
+.detail-close{position:absolute;top:14px;right:14px;background:none;border:1px solid var(--border);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--muted);line-height:1;display:flex;align-items:center;justify-content:center}
+.detail-close:hover{border-color:var(--danger);color:var(--danger)}
+.detail-titulo{font-size:22px;font-weight:800;margin-bottom:4px}
+.detail-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+.d-sec{margin-bottom:22px}
+.d-sec h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amber-d);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.d-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px}
+.d-item label{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.d-item span{font-size:14px;font-weight:500}
+.d-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:4px}
+.d-photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid var(--border)}
+.d-sig{max-width:280px;border:1px solid var(--border);border-radius:8px;padding:8px;background:#fff;margin-top:4px}
+.detail-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+
+/* ── SETTINGS OVERLAY ────────────────────────────────── */
+#ov-settings{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:20px}
+#ov-settings.on{display:flex}
+.settings-box{background:var(--card);border-radius:16px;padding:28px;width:100%;max-width:440px}
+.settings-box h3{font-size:18px;font-weight:800;margin-bottom:20px}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-of-type{border:none}
+.settings-row label{font-size:14px;font-weight:500}
+.settings-row span{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ── TOAST ───────────────────────────────────────────── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.ok{background:#15803d}
+#toast.err{background:var(--danger)}
+
+/* ── KENLO IFRAME ────────────────────────────────────── */
+#kenlo-frame{width:100%;border:none;display:block}
+
+/* ── PRINT ───────────────────────────────────────────── */
+#print-area{display:none}
+@media print {
+  body>*{display:none!important}
+  #print-area{display:block!important;padding:20px;font-size:12px;font-family:'Times New Roman',serif;color:#000}
+  .prt-hdr{text-align:center;margin-bottom:20px;border-bottom:2px solid #000;padding-bottom:12px}
+  .prt-hdr h1{font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+  .prt-hdr p{font-size:12px;margin-top:4px}
+  .prt-title{font-size:18px;font-weight:700;text-align:center;text-transform:uppercase;margin:16px 0 20px;border:2px solid #000;padding:10px}
+  .prt-sec{margin-bottom:16px}
+  .prt-sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #000;padding-bottom:4px;margin-bottom:8px}
+  .prt-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
+  .prt-row.r3{grid-template-columns:1fr 1fr 1fr}
+  .prt-field label{font-size:10px;font-weight:700;text-transform:uppercase;display:block;margin-bottom:2px}
+  .prt-field p{border-bottom:1px solid #aaa;min-height:20px;padding-bottom:2px;font-size:12px}
+  .prt-legal{font-size:10px;line-height:1.5;margin:12px 0;padding:10px;border:1px solid #000}
+  .prt-sigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:16px}
+  .prt-sig{text-align:center}
+  .prt-sig-line{border-bottom:1px solid #000;height:60px;margin-bottom:6px}
+  .prt-sig p{font-size:10px}
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:600px){
+  .r2,.r3{grid-template-columns:1fr}
+  .tab{padding:11px 13px;font-size:13px}
+  .pad{padding:14px}
+  .sec{padding:16px}
+  .detail-box{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: LOGIN
+═══════════════════════════════════════════════════════ -->
+<div id="s-login">
+  <div class="login-box">
+    <div class="login-logo"><img src="logo.svg" alt="Luàna Guedes Imóveis" style="height:60px;max-width:280px;display:block;margin:0 auto"></div>
+    <div class="login-title">Portal Luàna Guedes Imóveis</div>
+    <div class="login-sub">Sistema interno de captações</div>
+    <input class="inp" id="pwd-inp" type="password" placeholder="Senha de acesso" style="margin-bottom:0" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="err" id="login-err"></div>
+    <button class="btn btn-amber btn-full" style="margin-top:12px" onclick="doLogin()">Entrar</button>
+    <p style="font-size:11px;color:var(--muted);margin-top:20px">Acesso restrito · CRECI/PI 4114</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: SETUP (primeiro acesso)
+═══════════════════════════════════════════════════════ -->
+<div id="s-setup" style="display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px">
+  <div class="setup-box">
+    <div style="text-align:center;margin-bottom:20px"><img src="logo.svg" alt="Luàna Guedes Imóveis" style="height:44px"></div>
+    <h2>⚙️ Configuração Inicial</h2>
+    <p>Configure o banco de dados uma vez. Depois disso, o sistema funciona automaticamente.</p>
+
+    <div class="setup-step">
+      <span class="step-num">1</span>
+      <div>
+        Crie uma conta gratuita em <a href="https://airtable.com" target="_blank">airtable.com</a>
+        e crie uma nova base vazia (clique em <strong>"Add a base"</strong> → <strong>"Start from scratch"</strong>). Chame de <strong>"Captacoes LG"</strong>.
+      </div>
+    </div>
+
+    <div class="setup-step">
+      <span class="step-num">2</span>
+      <div>
+        Acesse <a href="https://airtable.com/create/tokens" target="_blank">airtable.com/create/tokens</a>,
+        clique em <strong>"Create new token"</strong>, dê um nome qualquer, e adicione os escopos:
+        <br><br>
+        <code style="background:var(--bg);padding:3px 6px;border-radius:4px;font-size:12px">data.records:read</code>&nbsp;
+        <code style="background:var(--bg);padding:3px 6px;border-radius:4px;font-size:12px">data.records:write</code>&nbsp;
+        <code style="background:var(--bg);padding:3px 6px;border-radius:4px;font-size:12px">schema.bases:read</code>&nbsp;
+        <code style="background:var(--bg);padding:3px 6px;border-radius:4px;font-size:12px">schema.bases:write</code>
+        <br><br>
+        Em "Access", selecione a base <strong>"Captacoes LG"</strong>. Copie o token gerado.
+      </div>
+    </div>
+
+    <div class="setup-step">
+      <span class="step-num">3</span>
+      <div>
+        Abra a base no Airtable. O ID da base aparece na URL: <br>
+        <code style="background:var(--bg);padding:3px 6px;border-radius:4px;font-size:12px">airtable.com/<strong>appXXXXXXXXXXXXXX</strong>/...</code>
+        <br>Copie o trecho começando com <strong>app...</strong>
+      </div>
+    </div>
+
+    <div class="setup-fields">
+      <div class="fg">
+        <label class="lbl">Personal Access Token</label>
+        <input class="inp" id="setup-pat" type="password" placeholder="patXXXXXXXXXX...">
+        <div class="setup-hint">Começa com "pat"</div>
+      </div>
+      <div class="fg">
+        <label class="lbl">ID da Base (Base ID)</label>
+        <input class="inp" id="setup-baseid" placeholder="appXXXXXXXXXXXXXX">
+        <div class="setup-hint">Começa com "app"</div>
+      </div>
+      <div class="fg">
+        <label class="lbl">Senha de acesso ao sistema</label>
+        <input class="inp" id="setup-pwd" type="password" placeholder="Crie uma senha para o sistema">
+        <div class="setup-hint">Anote bem — você vai usar toda vez que abrir o site</div>
+      </div>
+      <div class="err" id="setup-err"></div>
+      <button class="btn btn-amber btn-full" id="setup-btn" onclick="doSetup()">Conectar e Criar Banco de Dados</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: APP PRINCIPAL
+═══════════════════════════════════════════════════════ -->
+<div id="s-app" style="display:none;flex-direction:column;min-height:100vh">
+
+  <!-- Header -->
+  <header class="hdr">
+    <div class="hdr-logo"><img src="logo.svg" alt="Luàna Guedes Imóveis" style="height:26px;vertical-align:middle"></div>
+    <div class="hdr-space"></div>
+    <button class="hdr-btn" onclick="showOvSettings()">⚙️ Config</button>
+    <button class="hdr-btn" onclick="doLogout()">Sair</button>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="tabs">
+    <div class="tab on" onclick="switchTab('list')">📋 Captações</div>
+    <div class="tab" onclick="switchTab('form')">➕ Nova Captação</div>
+    <div class="tab" onclick="switchTab('kenlo')">🔍 Kenlo (Thiago Garcia)</div>
+  </nav>
+
+  <!-- ── TAB: LISTA DE CAPTAÇÕES ───────────────────── -->
+  <div class="panel on" id="t-list">
+    <div class="pad">
+      <div class="search-bar">
+        <input class="inp" id="search-q" placeholder="Buscar bairro, tipo, proprietário..." oninput="filterList()">
+        <select class="inp" id="filter-status" onchange="filterList()">
+          <option value="">Todos os status</option>
+          <option value="Ativa">Ativas</option>
+          <option value="Vendida">Vendidas</option>
+          <option value="Arquivada">Arquivadas</option>
+        </select>
+        <button class="btn btn-amber btn-sm" onclick="loadList()">↺ Atualizar</button>
+      </div>
+      <div id="list-container">
+        <div class="loading"><div class="spin"></div> Carregando captações...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: NOVA CAPTAÇÃO ────────────────────────── -->
+  <div class="panel" id="t-form">
+    <div class="pad">
+      <div class="form-wrap">
+
+        <!-- 1. IDENTIFICAÇÃO DO IMÓVEL -->
+        <div class="sec">
+          <div class="sec-title">🏠 1. Identificação do Imóvel</div>
+
+          <div class="row" style="margin-bottom:14px">
+            <div class="fg">
+              <label class="lbl">Tipo de Imóvel</label>
+              <div class="radios" id="f-tipo">
+                <label class="rdo"><input type="radio" name="tipo" value="Casa"> Casa</label>
+                <label class="rdo"><input type="radio" name="tipo" value="Apartamento"> Apartamento</label>
+                <label class="rdo"><input type="radio" name="tipo" value="Cobertura"> Cobertura</label>
+                <label class="rdo"><input type="radio" name="tipo" value="Terreno"> Terreno</label>
+                <label class="rdo"><input type="radio" name="tipo" value="Comercial"> Comercial</label>
+                <label class="rdo"><input type="radio" name="tipo" value="Outro"> Outro</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Bairro <span style="color:var(--danger)">*</span></label>
+              <input class="inp" id="f-bairro" type="text" placeholder="Ex: Jóquei">
+            </div>
+            <div class="fg">
+              <label class="lbl">Condomínio / Edifício</label>
+              <input class="inp" id="f-cond-ed" type="text" placeholder="Nome do empreendimento">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="fg">
+              <label class="lbl">Endereço <span style="color:var(--danger);font-size:11px">(confidencial — não aparece em anúncios)</span></label>
+              <input class="inp" id="f-endereco" type="text" placeholder="Rua, número, complemento">
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Ponto de Referência</label>
+              <input class="inp" id="f-ponto-ref" type="text">
+            </div>
+            <div class="fg">
+              <label class="lbl">Cidade</label>
+              <input class="inp" id="f-cidade" type="text" value="Teresina">
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Observação</label>
+            <textarea class="inp" id="f-obs-id" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- 2. CARACTERÍSTICAS -->
+        <div class="sec">
+          <div class="sec-title">📐 2. Características Principais</div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Valor de Venda (R$)</label>
+              <input class="inp" id="f-valor" type="number" placeholder="Ex: 850000" min="0">
+            </div>
+            <div class="fg">
+              <label class="lbl">Área Privativa (m²)</label>
+              <input class="inp" id="f-area-priv" type="number" placeholder="Ex: 120" min="0" step="0.1">
+            </div>
+          </div>
+
+          <div class="row r3">
+            <div class="fg">
+              <label class="lbl">Área Construída (m²)</label>
+              <input class="inp" id="f-area-const" type="number" placeholder="0" min="0" step="0.1">
+            </div>
+            <div class="fg">
+              <label class="lbl">Área Terreno (m²)</label>
+              <input class="inp" id="f-area-terr" type="number" placeholder="0" min="0" step="0.1">
+            </div>
+            <div class="fg">
+              <label class="lbl">Ano de Construção</label>
+              <input class="inp" id="f-ano-const" type="number" placeholder="Ex: 2018" min="1900" max="2030">
+            </div>
+          </div>
+
+          <div class="row r3">
+            <div class="fg">
+              <label class="lbl">Quartos</label>
+              <input class="inp" id="f-quartos" type="number" placeholder="0" min="0">
+            </div>
+            <div class="fg">
+              <label class="lbl">Suítes</label>
+              <input class="inp" id="f-suites" type="number" placeholder="0" min="0">
+            </div>
+            <div class="fg">
+              <label class="lbl">Banheiros</label>
+              <input class="inp" id="f-banheiros" type="number" placeholder="0" min="0">
+            </div>
+          </div>
+
+          <div class="row r3">
+            <div class="fg">
+              <label class="lbl">Andar</label>
+              <input class="inp" id="f-andar" type="number" placeholder="0" min="0">
+            </div>
+            <div class="fg">
+              <label class="lbl">Cond. Mensal (R$)</label>
+              <input class="inp" id="f-cond-mensal" type="number" placeholder="0" min="0">
+            </div>
+            <div class="fg">
+              <label class="lbl">IPTU Mensal (R$)</label>
+              <input class="inp" id="f-iptu" type="number" placeholder="0" min="0">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="fg">
+              <label class="lbl">Lavabo</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="lavabo" value="Sim"> Sim</label>
+                <label class="rdo"><input type="radio" name="lavabo" value="Não"> Não</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row r3">
+            <div class="fg">
+              <label class="lbl">Vagas de Garagem</label>
+              <input class="inp" id="f-vagas" type="number" placeholder="0" min="0">
+            </div>
+            <div class="fg">
+              <label class="lbl">Cobertura</label>
+              <select class="inp" id="f-vagas-cob">
+                <option value="">—</option>
+                <option>Cobertas</option>
+                <option>Descobertas</option>
+                <option>Mistas</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="lbl">Configuração</label>
+              <select class="inp" id="f-vagas-config">
+                <option value="">—</option>
+                <option>Independentes</option>
+                <option>Gaveta</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Piso Predominante</label>
+            <div class="radios">
+              <label class="rdo"><input type="radio" name="piso" value="Porcelanato"> Porcelanato</label>
+              <label class="rdo"><input type="radio" name="piso" value="Cerâmica"> Cerâmica</label>
+              <label class="rdo"><input type="radio" name="piso" value="Mármore"> Mármore</label>
+              <label class="rdo"><input type="radio" name="piso" value="Granito"> Granito</label>
+              <label class="rdo"><input type="radio" name="piso" value="Madeira"> Madeira</label>
+              <label class="rdo"><input type="radio" name="piso" value="Vinílico"> Vinílico</label>
+              <label class="rdo"><input type="radio" name="piso" value="Outro"> Outro</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. AMBIENTES E DIFERENCIAIS -->
+        <div class="sec">
+          <div class="sec-title">✨ 3. Ambientes, Diferenciais e Área Comum</div>
+
+          <div class="fg" style="margin-bottom:14px">
+            <label class="lbl">Diferenciais do Imóvel</label>
+            <div class="checks" id="f-ambientes">
+              <label class="chk"><input type="checkbox" value="Varanda"> Varanda</label>
+              <label class="chk"><input type="checkbox" value="Área gourmet"> Área gourmet</label>
+              <label class="chk"><input type="checkbox" value="Closet"> Closet</label>
+              <label class="chk"><input type="checkbox" value="Escritório"> Escritório</label>
+              <label class="chk"><input type="checkbox" value="DCE"> DCE</label>
+              <label class="chk"><input type="checkbox" value="Despensa"> Despensa</label>
+              <label class="chk"><input type="checkbox" value="Planejados"> Planejados</label>
+              <label class="chk"><input type="checkbox" value="Piscina privativa"> Piscina privativa</label>
+              <label class="chk"><input type="checkbox" value="Energia solar"> Energia solar</label>
+              <label class="chk"><input type="checkbox" value="Elevador privativo"> Elevador privativo</label>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Lazer / Condomínio</label>
+            <div class="checks" id="f-lazer">
+              <label class="chk"><input type="checkbox" value="Piscina"> Piscina</label>
+              <label class="chk"><input type="checkbox" value="Academia"> Academia</label>
+              <label class="chk"><input type="checkbox" value="Salão de festas"> Salão de festas</label>
+              <label class="chk"><input type="checkbox" value="Playground"> Playground</label>
+              <label class="chk"><input type="checkbox" value="Quadra"> Quadra</label>
+              <label class="chk"><input type="checkbox" value="Coworking"> Coworking</label>
+              <label class="chk"><input type="checkbox" value="Portaria 24h"> Portaria 24h</label>
+              <label class="chk"><input type="checkbox" value="Gerador"> Gerador</label>
+            </div>
+          </div>
+
+          <div class="fg" style="margin-top:12px">
+            <label class="lbl">Observação</label>
+            <textarea class="inp" id="f-obs-amb" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- 4. CHAVES E ACESSO -->
+        <div class="sec">
+          <div class="sec-title">🔑 4. Chaves e Acesso ao Imóvel</div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Chaves com</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="chaves" value="Com Luàna"> Com Luàna</label>
+                <label class="rdo"><input type="radio" name="chaves" value="Proprietário"> Proprietário</label>
+                <label class="rdo"><input type="radio" name="chaves" value="Portaria"> Portaria</label>
+                <label class="rdo"><input type="radio" name="chaves" value="Outro"> Outro</label>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="lbl">Visitas</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="visitas" value="Agendamento prévio"> Agendamento prévio</label>
+                <label class="rdo"><input type="radio" name="visitas" value="Livre"> Livre</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Melhor horário</label>
+              <input class="inp" id="f-horario" type="text" placeholder="Ex: Seg-Sex 9h-18h">
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Observação</label>
+            <textarea class="inp" id="f-obs-acesso" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- 5. DADOS DO PROPRIETÁRIO -->
+        <div class="sec">
+          <div class="sec-title">👤 5. Dados do Proprietário</div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Nome completo <span style="color:var(--danger)">*</span></label>
+              <input class="inp" id="f-nome-prop" type="text">
+            </div>
+            <div class="fg">
+              <label class="lbl">Profissão</label>
+              <input class="inp" id="f-prof-prop" type="text">
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">CPF</label>
+              <input class="inp" id="f-cpf-prop" type="text" placeholder="000.000.000-00">
+            </div>
+            <div class="fg">
+              <label class="lbl">RG</label>
+              <input class="inp" id="f-rg-prop" type="text">
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Telefone</label>
+              <input class="inp" id="f-tel-prop" type="tel" placeholder="(86) 9XXXX-XXXX">
+            </div>
+            <div class="fg">
+              <label class="lbl">E-mail</label>
+              <input class="inp" id="f-email-prop" type="email">
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Estado Civil</label>
+              <select class="inp" id="f-est-civil">
+                <option value="">Selecione</option>
+                <option>Solteiro(a)</option>
+                <option>Casado(a)</option>
+                <option>Divorciado(a)</option>
+                <option>Viúvo(a)</option>
+                <option>União estável</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Endereço Residencial</label>
+            <input class="inp" id="f-end-prop" type="text">
+          </div>
+        </div>
+
+        <!-- 6. CÔNJUGE -->
+        <div class="sec" id="sec-conj">
+          <div class="sec-title">👫 6. Cônjuge / Coproprietário(a)</div>
+          <div class="section-note">Preencha quando houver cônjuge ou coproprietário(a).</div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Nome completo</label>
+              <input class="inp" id="f-nome-conj" type="text">
+            </div>
+            <div class="fg">
+              <label class="lbl">Profissão</label>
+              <input class="inp" id="f-prof-conj" type="text">
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">CPF</label>
+              <input class="inp" id="f-cpf-conj" type="text" placeholder="000.000.000-00">
+            </div>
+            <div class="fg">
+              <label class="lbl">RG</label>
+              <input class="inp" id="f-rg-conj" type="text">
+            </div>
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Telefone</label>
+              <input class="inp" id="f-tel-conj" type="tel">
+            </div>
+            <div class="fg">
+              <label class="lbl">E-mail</label>
+              <input class="inp" id="f-email-conj" type="email">
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Regime de Bens</label>
+            <select class="inp" id="f-regime">
+              <option value="">Selecione</option>
+              <option>Comunhão parcial</option>
+              <option>Comunhão universal</option>
+              <option>Separação de bens</option>
+              <option>Participação final</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 7. DOCUMENTAÇÃO E CONDIÇÕES -->
+        <div class="sec">
+          <div class="sec-title">📄 7. Documentação e Condições de Venda</div>
+
+          <div class="fg" style="margin-bottom:14px">
+            <label class="lbl">Documentação do Imóvel</label>
+            <div class="checks" id="f-docs">
+              <label class="chk"><input type="checkbox" value="Escritura"> Escritura</label>
+              <label class="chk"><input type="checkbox" value="Registro"> Registro</label>
+              <label class="chk"><input type="checkbox" value="Quitado"> Quitado</label>
+              <label class="chk"><input type="checkbox" value="Financiado"> Financiado</label>
+              <label class="chk"><input type="checkbox" value="Financiável"> Financiável</label>
+              <label class="chk"><input type="checkbox" value="Inventário"> Inventário</label>
+              <label class="chk"><input type="checkbox" value="Não sei informar"> Não sei informar</label>
+            </div>
+          </div>
+
+          <div class="row r2" style="margin-bottom:10px">
+            <div class="fg">
+              <label class="lbl">Ônus / Dívidas?</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="onus" value="Não"> Não</label>
+                <label class="rdo"><input type="radio" name="onus" value="Sim"> Sim</label>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="lbl">Saldo devedor (R$)</label>
+              <input class="inp" id="f-saldo-onus" type="number" placeholder="0" min="0">
+            </div>
+          </div>
+
+          <div class="fg" style="margin-bottom:12px">
+            <label class="lbl">Qual ônus/dívida?</label>
+            <input class="inp" id="f-onus-desc" type="text" placeholder="Ex: financiamento Caixa">
+          </div>
+
+          <div class="row r3">
+            <div class="fg">
+              <label class="lbl">Aceita financiamento?</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="aceita-fin" value="Sim"> Sim</label>
+                <label class="rdo"><input type="radio" name="aceita-fin" value="Não"> Não</label>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="lbl">Já anunciado?</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="anunciado" value="Não"> Não</label>
+                <label class="rdo"><input type="radio" name="anunciado" value="Sim"> Sim</label>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="lbl">Aceita permuta?</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="permuta" value="Não"> Não</label>
+                <label class="rdo"><input type="radio" name="permuta" value="Sim"> Sim</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="fg" style="margin:10px 0 12px">
+            <label class="lbl">Qual permuta?</label>
+            <input class="inp" id="f-permuta-desc" type="text">
+          </div>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Situação do Imóvel</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="situacao" value="Ocupado"> Ocupado</label>
+                <label class="rdo"><input type="radio" name="situacao" value="Desocupado"> Desocupado</label>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="lbl">Urgência de Venda</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="urgencia" value="Baixa"> Baixa</label>
+                <label class="rdo"><input type="radio" name="urgencia" value="Média"> Média</label>
+                <label class="rdo"><input type="radio" name="urgencia" value="Alta"> Alta</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="fg" style="margin-top:12px">
+            <label class="lbl">Documentos apresentados</label>
+            <div class="checks" id="f-docs-apres">
+              <label class="chk"><input type="checkbox" value="Matrícula"> Matrícula</label>
+              <label class="chk"><input type="checkbox" value="Escritura/contrato"> Escritura/contrato</label>
+              <label class="chk"><input type="checkbox" value="IPTU"> IPTU</label>
+              <label class="chk"><input type="checkbox" value="Condomínio"> Condomínio</label>
+              <label class="chk"><input type="checkbox" value="Nenhum"> Nenhum</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. PORTEIRA FECHADA + AUTORIZAÇÃO -->
+        <div class="sec">
+          <div class="sec-title">🔒 8. Porteira Fechada e Autorização</div>
+
+          <div class="row r2" style="margin-bottom:12px">
+            <div class="fg">
+              <label class="lbl">Venda porteira fechada?</label>
+              <div class="radios">
+                <label class="rdo"><input type="radio" name="porteira" value="Não"> Não</label>
+                <label class="rdo"><input type="radio" name="porteira" value="Sim"> Sim</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="fg" style="margin-bottom:12px">
+            <label class="lbl">Itens que permanecem no imóvel</label>
+            <textarea class="inp" id="f-itens-ficam" rows="2" placeholder="Ex: armários, ar-condicionado..."></textarea>
+          </div>
+
+          <div class="fg" style="margin-bottom:18px">
+            <label class="lbl">Itens expressamente excluídos da venda</label>
+            <textarea class="inp" id="f-itens-excl" rows="2"></textarea>
+          </div>
+
+          <div style="border-top:1px solid var(--border);padding-top:16px">
+            <div class="row r2">
+              <div class="fg">
+                <label class="lbl">Exclusividade?</label>
+                <div class="radios">
+                  <label class="rdo"><input type="radio" name="exclusiv" value="Não"> Não</label>
+                  <label class="rdo"><input type="radio" name="exclusiv" value="Sim"> Sim</label>
+                </div>
+              </div>
+            </div>
+            <div class="row r2" style="margin-top:10px">
+              <div class="fg">
+                <label class="lbl">Vigência — Início</label>
+                <input class="inp" id="f-vig-ini" type="date">
+              </div>
+              <div class="fg">
+                <label class="lbl">Vigência — Fim</label>
+                <input class="inp" id="f-vig-fim" type="date">
+              </div>
+            </div>
+          </div>
+
+          <div class="fg" style="margin-top:14px">
+            <label class="lbl">Observações Gerais</label>
+            <textarea class="inp" id="f-obs-geral" rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- 9. FOTOS -->
+        <div class="sec">
+          <div class="sec-title">📸 9. Fotos do Imóvel</div>
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('foto-input').click()">
+            <div class="drop-icon">📷</div>
+            <div>Clique ou arraste fotos aqui</div>
+            <div style="font-size:12px;margin-top:4px">JPG, PNG — várias de uma vez</div>
+          </div>
+          <input type="file" id="foto-input" accept="image/*" multiple style="display:none" onchange="addFotos(this.files)">
+          <div class="thumb-grid" id="thumb-grid"></div>
+        </div>
+
+        <!-- 10. ASSINATURA DIGITAL -->
+        <div class="sec">
+          <div class="sec-title">✍️ 10. Assinatura Digital</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+            Assine digitalmente ou imprima a ficha para colher assinatura física. A impressão inclui o texto de autorização completo.
+          </p>
+
+          <div class="row r2">
+            <div class="fg">
+              <label class="lbl">Assinatura do(a) Proprietário(a)</label>
+              <div class="sig-wrap">
+                <div class="sig-bar">
+                  <span>Assine no espaço abaixo</span>
+                  <button class="btn-clr" onclick="clearSig('prop')">Limpar</button>
+                </div>
+                <canvas class="sig-canvas" id="sig-prop" height="160"></canvas>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="lbl">Assinatura do(a) Cônjuge <span style="color:var(--muted);font-weight:400">(se aplicável)</span></label>
+              <div class="sig-wrap">
+                <div class="sig-bar">
+                  <span>Assine no espaço abaixo</span>
+                  <button class="btn-clr" onclick="clearSig('conj')">Limpar</button>
+                </div>
+                <canvas class="sig-canvas" id="sig-conj" height="160"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="sec" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-amber" id="btn-salvar" onclick="salvarCaptacao()">💾 Salvar Captação</button>
+          <button class="btn btn-outline" onclick="imprimirFicha()">🖨️ Imprimir Ficha</button>
+          <button class="btn btn-outline btn-sm" onclick="limparForm()" style="margin-left:auto;color:var(--muted)">Limpar formulário</button>
+        </div>
+
+        <div id="save-progress" style="display:none;margin-bottom:20px">
+          <div style="background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px">
+            <div class="spin"></div>
+            <span id="save-msg" style="font-size:14px;color:var(--muted)">Salvando...</span>
+          </div>
+        </div>
+
+      </div><!-- /form-wrap -->
+    </div><!-- /pad -->
+  </div><!-- /t-form -->
+
+  <!-- ── TAB: KENLO ─────────────────────────────────── -->
+  <div class="panel" id="t-kenlo">
+    <iframe id="kenlo-frame" src="kenlo.html" style="width:100%;border:none;height:calc(100vh - 110px)"></iframe>
+  </div>
+
+</div><!-- /s-app -->
+
+<!-- ══════════════════════════════════════════════════════
+     OVERLAY: DETALHE DA CAPTAÇÃO
+═══════════════════════════════════════════════════════ -->
+<div id="ov-detail">
+  <div class="detail-box">
+    <button class="detail-close" onclick="closeDetail()">×</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     OVERLAY: SETTINGS
+═══════════════════════════════════════════════════════ -->
+<div id="ov-settings">
+  <div class="settings-box">
+    <h3>⚙️ Configurações</h3>
+
+    <div class="fg" style="margin-bottom:14px">
+      <label class="lbl">Airtable Personal Access Token</label>
+      <input class="inp" id="cfg-pat" type="password" placeholder="patXXXXXXXXXX...">
+    </div>
+    <div class="fg" style="margin-bottom:14px">
+      <label class="lbl">ID da Base Airtable</label>
+      <input class="inp" id="cfg-baseid" placeholder="appXXXXXXXXXXXXXX">
+    </div>
+    <div class="fg" style="margin-bottom:20px">
+      <label class="lbl">Senha do Sistema</label>
+      <input class="inp" id="cfg-pwd" type="password" placeholder="Nova senha (deixe vazio para manter)">
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-amber" onclick="saveSettings()">Salvar</button>
+      <button class="btn btn-outline" onclick="closeOvSettings()">Cancelar</button>
+      <button class="btn btn-outline btn-sm" style="margin-left:auto;color:var(--danger);border-color:var(--danger)" onclick="if(confirm('Sair do sistema?'))doLogout()">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT AREA -->
+<div id="print-area"></div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ─── CONFIG & STATE ──────────────────────────────────────
+const S = {
+  get pat()    { return localStorage.getItem('lg_pat') || ''; },
+  get baseId() { return localStorage.getItem('lg_base') || ''; },
+  get pwdHash(){ return localStorage.getItem('lg_pwd') || ''; },
+  set pat(v)    { localStorage.setItem('lg_pat', v); },
+  set baseId(v) { localStorage.setItem('lg_base', v); },
+  set pwdHash(v){ localStorage.setItem('lg_pwd', v); },
+};
+
+const TABLE = 'Captacoes';
+let allRecords = [];
+let photoFiles = [];
+let sigProp = null, sigConj = null;
+
+// ─── HASH ────────────────────────────────────────────────
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// ─── AUTH ────────────────────────────────────────────────
+async function doLogin() {
+  const pwd = document.getElementById('pwd-inp').value;
+  if (!pwd) return;
+
+  // First time? Go to setup
+  if (!S.pwdHash && !S.pat) {
+    show('s-setup');
+    return;
+  }
+
+  const hash = await sha256(pwd);
+  if (hash !== S.pwdHash) {
+    document.getElementById('login-err').textContent = 'Senha incorreta.';
+    return;
+  }
+  sessionStorage.setItem('lg_auth', '1');
+  enterApp();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('lg_auth');
+  location.reload();
+}
+
+// ─── SETUP ───────────────────────────────────────────────
+async function doSetup() {
+  const pat    = document.getElementById('setup-pat').value.trim();
+  const baseId = document.getElementById('setup-baseid').value.trim();
+  const pwd    = document.getElementById('setup-pwd').value;
+  const errEl  = document.getElementById('setup-err');
+  const btn    = document.getElementById('setup-btn');
+
+  errEl.textContent = '';
+  if (!pat || !baseId || !pwd) { errEl.textContent = 'Preencha todos os campos.'; return; }
+  if (!pat.startsWith('pat')) { errEl.textContent = 'Token inválido — deve começar com "pat".'; return; }
+  if (!baseId.startsWith('app')) { errEl.textContent = 'Base ID inválido — deve começar com "app".'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Criando banco de dados...';
+
+  try {
+    // Test connection
+    const test = await fetch(`https://api.airtable.com/v0/meta/bases/${baseId}/tables`, {
+      headers: { 'Authorization': `Bearer ${pat}` }
+    });
+    if (!test.ok) {
+      const e = await test.json();
+      throw new Error(e.error?.message || 'Token ou Base ID inválido.');
+    }
+
+    const tables = await test.json();
+    const exists = tables.tables?.some(t => t.name === TABLE);
+
+    if (!exists) {
+      btn.textContent = 'Criando tabela...';
+      await createAirtableTable(pat, baseId);
+    }
+
+    // Save config
+    S.pat    = pat;
+    S.baseId = baseId;
+    S.pwdHash = await sha256(pwd);
+    sessionStorage.setItem('lg_auth', '1');
+    toast('Banco de dados configurado com sucesso!', 'ok');
+    enterApp();
+  } catch(err) {
+    errEl.textContent = 'Erro: ' + err.message;
+    btn.disabled = false;
+    btn.textContent = 'Conectar e Criar Banco de Dados';
+  }
+}
+
+async function createAirtableTable(pat, baseId) {
+  const fields = [
+    {name:'status', type:'singleSelect', options:{choices:[
+      {name:'Ativa',color:'greenLight1'},{name:'Vendida',color:'blueLight1'},{name:'Arquivada',color:'grayLight1'}
+    ]}},
+    {name:'data_captacao', type:'date', options:{dateFormat:{name:'local'}}},
+    {name:'tipo', type:'singleSelect', options:{choices:[
+      {name:'Casa'},{name:'Apartamento'},{name:'Cobertura'},{name:'Terreno'},{name:'Comercial'},{name:'Outro'}
+    ]}},
+    {name:'bairro', type:'singleLineText'},
+    {name:'cond_edificio', type:'singleLineText'},
+    {name:'cidade', type:'singleLineText'},
+    {name:'endereco', type:'singleLineText'},
+    {name:'ponto_ref', type:'singleLineText'},
+    {name:'valor', type:'number', options:{precision:0}},
+    {name:'area_priv', type:'number', options:{precision:1}},
+    {name:'area_const', type:'number', options:{precision:1}},
+    {name:'area_terreno', type:'number', options:{precision:1}},
+    {name:'quartos', type:'number', options:{precision:0}},
+    {name:'suites', type:'number', options:{precision:0}},
+    {name:'banheiros', type:'number', options:{precision:0}},
+    {name:'lavabo', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'andar', type:'number', options:{precision:0}},
+    {name:'cond_mensal', type:'number', options:{precision:0}},
+    {name:'iptu_mensal', type:'number', options:{precision:0}},
+    {name:'ano_const', type:'number', options:{precision:0}},
+    {name:'vagas', type:'number', options:{precision:0}},
+    {name:'vagas_cobertura', type:'singleSelect', options:{choices:[{name:'Cobertas'},{name:'Descobertas'},{name:'Mistas'}]}},
+    {name:'vagas_config', type:'singleSelect', options:{choices:[{name:'Independentes'},{name:'Gaveta'}]}},
+    {name:'piso', type:'singleSelect', options:{choices:[
+      {name:'Porcelanato'},{name:'Cerâmica'},{name:'Mármore'},{name:'Granito'},{name:'Madeira'},{name:'Vinílico'},{name:'Outro'}
+    ]}},
+    {name:'ambientes', type:'multipleSelects', options:{choices:[
+      {name:'Varanda'},{name:'Área gourmet'},{name:'Closet'},{name:'Escritório'},{name:'DCE'},
+      {name:'Despensa'},{name:'Planejados'},{name:'Piscina privativa'},{name:'Energia solar'},{name:'Elevador privativo'}
+    ]}},
+    {name:'lazer', type:'multipleSelects', options:{choices:[
+      {name:'Piscina'},{name:'Academia'},{name:'Salão de festas'},{name:'Playground'},
+      {name:'Quadra'},{name:'Coworking'},{name:'Portaria 24h'},{name:'Gerador'}
+    ]}},
+    {name:'chaves', type:'singleSelect', options:{choices:[
+      {name:'Com Luàna'},{name:'Proprietário'},{name:'Portaria'},{name:'Outro'}
+    ]}},
+    {name:'visitas', type:'singleSelect', options:{choices:[{name:'Agendamento prévio'},{name:'Livre'}]}},
+    {name:'melhor_horario', type:'singleLineText'},
+    {name:'obs_acesso', type:'multilineText'},
+    {name:'nome_prop', type:'singleLineText'},
+    {name:'cpf_prop', type:'singleLineText'},
+    {name:'rg_prop', type:'singleLineText'},
+    {name:'tel_prop', type:'phoneNumber'},
+    {name:'email_prop', type:'email'},
+    {name:'prof_prop', type:'singleLineText'},
+    {name:'estado_civil', type:'singleSelect', options:{choices:[
+      {name:'Solteiro(a)'},{name:'Casado(a)'},{name:'Divorciado(a)'},{name:'Viúvo(a)'},{name:'União estável'}
+    ]}},
+    {name:'end_res_prop', type:'singleLineText'},
+    {name:'nome_conj', type:'singleLineText'},
+    {name:'cpf_conj', type:'singleLineText'},
+    {name:'rg_conj', type:'singleLineText'},
+    {name:'tel_conj', type:'phoneNumber'},
+    {name:'email_conj', type:'email'},
+    {name:'prof_conj', type:'singleLineText'},
+    {name:'regime_bens', type:'singleSelect', options:{choices:[
+      {name:'Comunhão parcial'},{name:'Comunhão universal'},{name:'Separação de bens'},{name:'Participação final'}
+    ]}},
+    {name:'documentacao', type:'multipleSelects', options:{choices:[
+      {name:'Escritura'},{name:'Registro'},{name:'Quitado'},{name:'Financiado'},
+      {name:'Financiável'},{name:'Inventário'},{name:'Não sei informar'}
+    ]}},
+    {name:'onus', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'onus_desc', type:'singleLineText'},
+    {name:'saldo_onus', type:'number', options:{precision:0}},
+    {name:'aceita_fin', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'ja_anunciado', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'aceita_permuta', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'permuta_desc', type:'singleLineText'},
+    {name:'situacao', type:'singleSelect', options:{choices:[{name:'Ocupado'},{name:'Desocupado'}]}},
+    {name:'urgencia', type:'singleSelect', options:{choices:[{name:'Baixa'},{name:'Média'},{name:'Alta'}]}},
+    {name:'docs_apres', type:'multipleSelects', options:{choices:[
+      {name:'Matrícula'},{name:'Escritura/contrato'},{name:'IPTU'},{name:'Condomínio'},{name:'Nenhum'}
+    ]}},
+    {name:'porteira', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'itens_ficam', type:'multilineText'},
+    {name:'itens_excluidos', type:'multilineText'},
+    {name:'exclusividade', type:'singleSelect', options:{choices:[{name:'Sim'},{name:'Não'}]}},
+    {name:'vigencia_ini', type:'date', options:{dateFormat:{name:'local'}}},
+    {name:'vigencia_fim', type:'date', options:{dateFormat:{name:'local'}}},
+    {name:'obs_geral', type:'multilineText'},
+    {name:'obs_id', type:'multilineText'},
+    {name:'obs_amb', type:'multilineText'},
+    {name:'fotos', type:'multipleAttachments'},
+    {name:'assinatura_prop', type:'multipleAttachments'},
+    {name:'assinatura_conj', type:'multipleAttachments'},
+  ];
+
+  const r = await fetch(`https://api.airtable.com/v0/meta/bases/${baseId}/tables`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${pat}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: TABLE, fields })
+  });
+  if (!r.ok) {
+    const e = await r.json();
+    throw new Error(e.error?.message || 'Erro ao criar tabela.');
+  }
+}
+
+// ─── APP INIT ────────────────────────────────────────────
+function enterApp() {
+  show('s-app', 'flex');
+  loadList();
+  initSigPads();
+  initDropZone();
+  // Populate settings fields
+  document.getElementById('cfg-pat').value    = S.pat;
+  document.getElementById('cfg-baseid').value = S.baseId;
+}
+
+function show(id, display='block') {
+  ['s-login','s-setup','s-app'].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.style.display = s === id ? (display||'block') : 'none';
+  });
+}
+
+// ─── TABS ────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const names = ['list','form','kenlo'];
+    t.classList.toggle('on', names[i] === name);
+  });
+  document.querySelectorAll('.panel').forEach((p,i) => {
+    const names = ['list','form','kenlo'];
+    p.classList.toggle('on', names[i] === name);
+  });
+  if (name === 'kenlo') {
+    const fr = document.getElementById('kenlo-frame');
+    if (!fr.src || fr.src === 'about:blank') fr.src = 'kenlo.html';
+  }
+}
+
+// ─── AIRTABLE API ─────────────────────────────────────────
+const AT = {
+  url(path='') { return `https://api.airtable.com/v0/${S.baseId}/${encodeURIComponent(TABLE)}${path}`; },
+  h() { return { 'Authorization': `Bearer ${S.pat}`, 'Content-Type': 'application/json' }; },
+
+  async list(params='') {
+    let all = [], offset = '';
+    do {
+      const qs = params + (offset ? `&offset=${offset}` : '');
+      const r = await fetch(AT.url('?' + qs + '&sort[0][field]=data_captacao&sort[0][direction]=desc'), {headers: AT.h()});
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error?.message || 'Erro ao buscar captações.');
+      (d.records||[]).forEach(rec => all.push(rec));
+      offset = d.offset || '';
+    } while (offset);
+    return all;
+  },
+
+  async create(fields) {
+    const r = await fetch(AT.url(), {
+      method: 'POST', headers: AT.h(),
+      body: JSON.stringify({ fields })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error?.message || 'Erro ao salvar.');
+    return d;
+  },
+
+  async uploadFile(recordId, fieldName, file) {
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('filename', file.name);
+    fd.append('contentType', file.type || 'application/octet-stream');
+    const r = await fetch(AT.url(`/${recordId}/uploadAttachment/${encodeURIComponent(fieldName)}`), {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${S.pat}` },
+      body: fd
+    });
+    if (!r.ok) {
+      const d = await r.json();
+      throw new Error(d.error?.message || 'Erro ao enviar arquivo.');
+    }
+    return r.json();
+  },
+
+  async uploadBlob(recordId, fieldName, blob, filename) {
+    const fd = new FormData();
+    fd.append('file', blob, filename);
+    fd.append('filename', filename);
+    fd.append('contentType', 'image/png');
+    const r = await fetch(AT.url(`/${recordId}/uploadAttachment/${encodeURIComponent(fieldName)}`), {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${S.pat}` },
+      body: fd
+    });
+    return r.ok;
+  }
+};
+
+// ─── LIST ────────────────────────────────────────────────
+async function loadList() {
+  const container = document.getElementById('list-container');
+  container.innerHTML = '<div class="loading"><div class="spin"></div> Carregando...</div>';
+  try {
+    allRecords = await AT.list();
+    renderList(allRecords);
+  } catch(err) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Erro ao carregar</h3><p>${err.message}</p><button class="btn btn-amber btn-sm" style="margin-top:12px" onclick="loadList()">Tentar novamente</button></div>`;
+  }
+}
+
+function filterList() {
+  const q      = document.getElementById('search-q').value.toLowerCase();
+  const status = document.getElementById('filter-status').value;
+  const filtered = allRecords.filter(r => {
+    const f = r.fields;
+    const text = `${f.tipo||''} ${f.bairro||''} ${f.nome_prop||''} ${f.cond_edificio||''}`.toLowerCase();
+    return (!q || text.includes(q)) && (!status || f.status === status);
+  });
+  renderList(filtered);
+}
+
+function renderList(records) {
+  const container = document.getElementById('list-container');
+  if (!records.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🏠</div><h3>${allRecords.length ? 'Nenhum resultado' : 'Nenhuma captação ainda'}</h3><p>${allRecords.length ? 'Tente outros filtros.' : 'Clique em "Nova Captação" para adicionar a primeira.'}</p></div>`;
+    return;
+  }
+  container.innerHTML = `<div class="cap-grid">${records.map(r => cardHtml(r)).join('')}</div>`;
+}
+
+function cardHtml(r) {
+  const f = r.fields;
+  const statusClass = {'Ativa':'b-ativa','Vendida':'b-vendida','Arquivada':'b-arquivada'}[f.status||'Ativa'] || 'b-ativa';
+  const valor = f.valor ? `R$ ${Number(f.valor).toLocaleString('pt-BR')}` : 'Valor sob consulta';
+  const local = [f.cond_edificio, f.bairro].filter(Boolean).join(', ') || '—';
+  const data  = f.data_captacao ? new Date(f.data_captacao+'T12:00:00').toLocaleDateString('pt-BR') : '';
+  const fotos = f.fotos ? f.fotos.length : 0;
+  return `<div class="cap-card" onclick="openDetail('${r.id}')">
+    <div class="cap-ref">Ref: ${r.id.slice(-6).toUpperCase()}</div>
+    <span class="badge ${statusClass}">${f.status||'Ativa'}</span>
+    <div class="cap-tipo">${f.tipo||'—'}</div>
+    <div class="cap-local">${local}</div>
+    <div class="cap-valor">${valor}</div>
+    <div class="cap-footer">
+      <span class="cap-date">${data}</span>
+      ${fotos ? `<span style="font-size:12px;color:var(--muted)">📷 ${fotos}</span>` : ''}
+    </div>
+  </div>`;
+}
+
+// ─── DETAIL VIEW ──────────────────────────────────────────
+function openDetail(id) {
+  const r = allRecords.find(x => x.id === id);
+  if (!r) return;
+  const f = r.fields;
+  const fmt = n => n ? `R$ ${Number(n).toLocaleString('pt-BR')}` : '—';
+  const val = v => v || '—';
+  const arr = v => Array.isArray(v) ? v.join(', ') : (v || '—');
+
+  let photosHtml = '';
+  if (f.fotos && f.fotos.length) {
+    photosHtml = `<div class="d-sec"><h4>Fotos (${f.fotos.length})</h4><div class="d-photos">${f.fotos.map(p=>`<img src="${p.url}" onclick="window.open('${p.url}','_blank')" title="${p.filename}">`).join('')}</div></div>`;
+  }
+
+  let sigHtml = '';
+  if (f.assinatura_prop && f.assinatura_prop.length) {
+    sigHtml += `<div class="fg"><label class="lbl">Assinatura Proprietário(a)</label><img class="d-sig" src="${f.assinatura_prop[0].url}"></div>`;
+  }
+  if (f.assinatura_conj && f.assinatura_conj.length) {
+    sigHtml += `<div class="fg" style="margin-top:10px"><label class="lbl">Assinatura Cônjuge</label><img class="d-sig" src="${f.assinatura_conj[0].url}"></div>`;
+  }
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-titulo">${f.tipo||'Imóvel'} — ${f.bairro||'—'}</div>
+    <div class="detail-sub">${[f.cond_edificio, f.cidade||'Teresina'].filter(Boolean).join(', ')} · ${f.data_captacao ? new Date(f.data_captacao+'T12:00:00').toLocaleDateString('pt-BR') : ''}</div>
+
+    <div class="d-sec">
+      <h4>Identificação</h4>
+      <div class="d-grid">
+        <div class="d-item"><label>Tipo</label><span>${val(f.tipo)}</span></div>
+        <div class="d-item"><label>Bairro</label><span>${val(f.bairro)}</span></div>
+        <div class="d-item"><label>Condomínio/Edifício</label><span>${val(f.cond_edificio)}</span></div>
+        <div class="d-item"><label>Cidade</label><span>${val(f.cidade)}</span></div>
+        <div class="d-item"><label>Endereço</label><span>${val(f.endereco)}</span></div>
+        <div class="d-item"><label>Ponto de referência</label><span>${val(f.ponto_ref)}</span></div>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <h4>Características</h4>
+      <div class="d-grid">
+        <div class="d-item"><label>Valor</label><span>${fmt(f.valor)}</span></div>
+        <div class="d-item"><label>Área privativa</label><span>${f.area_priv ? f.area_priv+'m²' : '—'}</span></div>
+        <div class="d-item"><label>Área construída</label><span>${f.area_const ? f.area_const+'m²' : '—'}</span></div>
+        <div class="d-item"><label>Quartos / Suítes</label><span>${val(f.quartos)}/${val(f.suites)}</span></div>
+        <div class="d-item"><label>Banheiros</label><span>${val(f.banheiros)}</span></div>
+        <div class="d-item"><label>Vagas</label><span>${val(f.vagas)}</span></div>
+        <div class="d-item"><label>Piso</label><span>${val(f.piso)}</span></div>
+        <div class="d-item"><label>Andar</label><span>${val(f.andar)}</span></div>
+        <div class="d-item"><label>Condomínio</label><span>${fmt(f.cond_mensal)}</span></div>
+        <div class="d-item"><label>IPTU</label><span>${fmt(f.iptu_mensal)}</span></div>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <h4>Diferenciais e Lazer</h4>
+      <div class="d-grid">
+        <div class="d-item"><label>Diferenciais</label><span>${arr(f.ambientes)}</span></div>
+        <div class="d-item"><label>Lazer/Condomínio</label><span>${arr(f.lazer)}</span></div>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <h4>Proprietário(a)</h4>
+      <div class="d-grid">
+        <div class="d-item"><label>Nome</label><span>${val(f.nome_prop)}</span></div>
+        <div class="d-item"><label>Telefone</label><span>${val(f.tel_prop)}</span></div>
+        <div class="d-item"><label>E-mail</label><span>${val(f.email_prop)}</span></div>
+        <div class="d-item"><label>CPF</label><span>${val(f.cpf_prop)}</span></div>
+        <div class="d-item"><label>Estado civil</label><span>${val(f.estado_civil)}</span></div>
+        ${f.nome_conj ? `<div class="d-item"><label>Cônjuge</label><span>${f.nome_conj}</span></div>` : ''}
+        ${f.tel_conj ? `<div class="d-item"><label>Tel. cônjuge</label><span>${f.tel_conj}</span></div>` : ''}
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <h4>Documentação e Condições</h4>
+      <div class="d-grid">
+        <div class="d-item"><label>Documentação</label><span>${arr(f.documentacao)}</span></div>
+        <div class="d-item"><label>Ônus/dívida</label><span>${val(f.onus)}</span></div>
+        <div class="d-item"><label>Aceita financiamento</label><span>${val(f.aceita_fin)}</span></div>
+        <div class="d-item"><label>Situação</label><span>${val(f.situacao)}</span></div>
+        <div class="d-item"><label>Urgência</label><span>${val(f.urgencia)}</span></div>
+        <div class="d-item"><label>Exclusividade</label><span>${val(f.exclusividade)}</span></div>
+        ${f.vigencia_ini ? `<div class="d-item"><label>Vigência</label><span>${new Date(f.vigencia_ini+'T12:00:00').toLocaleDateString('pt-BR')} a ${f.vigencia_fim ? new Date(f.vigencia_fim+'T12:00:00').toLocaleDateString('pt-BR') : '?'}</span></div>` : ''}
+      </div>
+    </div>
+
+    ${photosHtml}
+    ${sigHtml ? `<div class="d-sec"><h4>Assinaturas</h4>${sigHtml}</div>` : ''}
+
+    <div class="detail-acts">
+      <button class="btn btn-amber btn-sm" onclick="imprimirFichaRecord('${r.id}')">🖨️ Imprimir Ficha</button>
+      <select class="inp" style="max-width:180px;padding:8px 12px;font-size:13px" onchange="updateStatus('${r.id}',this.value)">
+        <option value="">Alterar status...</option>
+        <option value="Ativa">Ativa</option>
+        <option value="Vendida">Vendida</option>
+        <option value="Arquivada">Arquivada</option>
+      </select>
+      <button class="btn btn-outline btn-sm" onclick="closeDetail()">Fechar</button>
+    </div>
+  `;
+
+  document.getElementById('ov-detail').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('ov-detail').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function updateStatus(id, status) {
+  if (!status) return;
+  try {
+    const r = await fetch(`https://api.airtable.com/v0/${S.baseId}/${encodeURIComponent(TABLE)}/${id}`, {
+      method: 'PATCH', headers: AT.h(),
+      body: JSON.stringify({fields: {status}})
+    });
+    if (!r.ok) throw new Error('Erro ao atualizar.');
+    toast('Status atualizado!', 'ok');
+    closeDetail();
+    loadList();
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+// ─── SAVE CAPTAÇÃO ────────────────────────────────────────
+function getRadio(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+function getChecks(containerId) {
+  return [...document.querySelectorAll(`#${containerId} input[type=checkbox]:checked`)].map(c => c.value);
+}
+
+function num(id) {
+  const v = document.getElementById(id).value;
+  return v ? Number(v) : null;
+}
+
+function txt(id) {
+  return document.getElementById(id).value.trim() || null;
+}
+
+async function salvarCaptacao() {
+  const bairro   = txt('f-bairro');
+  const nomeProp = txt('f-nome-prop');
+  if (!bairro) { toast('Bairro é obrigatório.', 'err'); return; }
+  if (!nomeProp) { toast('Nome do proprietário é obrigatório.', 'err'); return; }
+
+  const fields = {
+    status: 'Ativa',
+    data_captacao: new Date().toISOString().split('T')[0],
+    tipo: getRadio('tipo') || null,
+    bairro,
+    cond_edificio: txt('f-cond-ed'),
+    cidade: txt('f-cidade') || 'Teresina',
+    endereco: txt('f-endereco'),
+    ponto_ref: txt('f-ponto-ref'),
+    valor: num('f-valor'),
+    area_priv: num('f-area-priv'),
+    area_const: num('f-area-const'),
+    area_terreno: num('f-area-terr'),
+    quartos: num('f-quartos'),
+    suites: num('f-suites'),
+    banheiros: num('f-banheiros'),
+    lavabo: getRadio('lavabo') || null,
+    andar: num('f-andar'),
+    cond_mensal: num('f-cond-mensal'),
+    iptu_mensal: num('f-iptu'),
+    ano_const: num('f-ano-const'),
+    vagas: num('f-vagas'),
+    vagas_cobertura: document.getElementById('f-vagas-cob').value || null,
+    vagas_config: document.getElementById('f-vagas-config').value || null,
+    piso: getRadio('piso') || null,
+    ambientes: getChecks('f-ambientes'),
+    lazer: getChecks('f-lazer'),
+    chaves: getRadio('chaves') || null,
+    visitas: getRadio('visitas') || null,
+    melhor_horario: txt('f-horario'),
+    obs_acesso: txt('f-obs-acesso'),
+    obs_id: txt('f-obs-id'),
+    obs_amb: txt('f-obs-amb'),
+    nome_prop: nomeProp,
+    cpf_prop: txt('f-cpf-prop'),
+    rg_prop: txt('f-rg-prop'),
+    tel_prop: txt('f-tel-prop'),
+    email_prop: txt('f-email-prop'),
+    prof_prop: txt('f-prof-prop'),
+    estado_civil: document.getElementById('f-est-civil').value || null,
+    end_res_prop: txt('f-end-prop'),
+    nome_conj: txt('f-nome-conj'),
+    cpf_conj: txt('f-cpf-conj'),
+    rg_conj: txt('f-rg-conj'),
+    tel_conj: txt('f-tel-conj'),
+    email_conj: txt('f-email-conj'),
+    prof_conj: txt('f-prof-conj'),
+    regime_bens: document.getElementById('f-regime').value || null,
+    documentacao: getChecks('f-docs'),
+    onus: getRadio('onus') || null,
+    onus_desc: txt('f-onus-desc'),
+    saldo_onus: num('f-saldo-onus'),
+    aceita_fin: getRadio('aceita-fin') || null,
+    ja_anunciado: getRadio('anunciado') || null,
+    aceita_permuta: getRadio('permuta') || null,
+    permuta_desc: txt('f-permuta-desc'),
+    situacao: getRadio('situacao') || null,
+    urgencia: getRadio('urgencia') || null,
+    docs_apres: getChecks('f-docs-apres'),
+    porteira: getRadio('porteira') || null,
+    itens_ficam: txt('f-itens-ficam'),
+    itens_excluidos: txt('f-itens-excl'),
+    exclusividade: getRadio('exclusiv') || null,
+    vigencia_ini: document.getElementById('f-vig-ini').value || null,
+    vigencia_fim: document.getElementById('f-vig-fim').value || null,
+    obs_geral: txt('f-obs-geral'),
+  };
+
+  // Remove null values to avoid Airtable errors
+  Object.keys(fields).forEach(k => {
+    if (fields[k] === null || (Array.isArray(fields[k]) && !fields[k].length)) delete fields[k];
+  });
+
+  const btn = document.getElementById('btn-salvar');
+  const prog = document.getElementById('save-progress');
+  const msg = document.getElementById('save-msg');
+  btn.disabled = true;
+  prog.style.display = 'block';
+
+  try {
+    msg.textContent = 'Criando registro...';
+    const record = await AT.create(fields);
+    const recId  = record.id;
+
+    // Upload photos
+    if (photoFiles.length) {
+      for (let i = 0; i < photoFiles.length; i++) {
+        msg.textContent = `Enviando foto ${i+1} de ${photoFiles.length}...`;
+        await AT.uploadFile(recId, 'fotos', photoFiles[i]);
+      }
+    }
+
+    // Upload signatures
+    if (sigProp && !sigProp.isEmpty()) {
+      msg.textContent = 'Salvando assinatura do proprietário...';
+      const blob = await (await fetch(sigProp.toDataURL('image/png'))).blob();
+      await AT.uploadBlob(recId, 'assinatura_prop', blob, `assinatura_prop_${recId}.png`);
+    }
+    if (sigConj && !sigConj.isEmpty()) {
+      msg.textContent = 'Salvando assinatura do cônjuge...';
+      const blob = await (await fetch(sigConj.toDataURL('image/png'))).blob();
+      await AT.uploadBlob(recId, 'assinatura_conj', blob, `assinatura_conj_${recId}.png`);
+    }
+
+    prog.style.display = 'none';
+    toast('Captação salva com sucesso!', 'ok');
+    limparForm();
+    switchTab('list');
+    loadList();
+  } catch(err) {
+    prog.style.display = 'none';
+    toast('Erro: ' + err.message, 'err');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ─── FORM UTILS ───────────────────────────────────────────
+function limparForm() {
+  document.querySelectorAll('#t-form input[type=text], #t-form input[type=number], #t-form input[type=tel], #t-form input[type=email], #t-form input[type=date], #t-form textarea, #t-form select').forEach(el => {
+    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  document.querySelectorAll('#t-form input[type=radio], #t-form input[type=checkbox]').forEach(el => { el.checked = false; });
+  document.getElementById('f-cidade').value = 'Teresina';
+  photoFiles = [];
+  document.getElementById('thumb-grid').innerHTML = '';
+  if (sigProp) sigProp.clear();
+  if (sigConj) sigConj.clear();
+}
+
+// ─── SIGNATURE PADS ───────────────────────────────────────
+function initSigPads() {
+  const cProp = document.getElementById('sig-prop');
+  const cConj = document.getElementById('sig-conj');
+  sigProp = new SignaturePad(cProp, {penColor:'#1a1a1a'});
+  sigConj = new SignaturePad(cConj, {penColor:'#1a1a1a'});
+  resizeSig(cProp);
+  resizeSig(cConj);
+  window.addEventListener('resize', () => { resizeSig(cProp); resizeSig(cConj); });
+}
+
+function resizeSig(canvas) {
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  canvas.width  = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  canvas.getContext('2d').scale(ratio, ratio);
+}
+
+function clearSig(who) {
+  if (who === 'prop' && sigProp) sigProp.clear();
+  if (who === 'conj' && sigConj) sigConj.clear();
+}
+
+// ─── DROP ZONE / FOTOS ────────────────────────────────────
+function initDropZone() {
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('drag');
+    addFotos(e.dataTransfer.files);
+  });
+}
+
+function addFotos(files) {
+  [...files].forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    photoFiles.push(file);
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+      const idx = photoFiles.length - 1;
+      div.innerHTML = `<img src="${e.target.result}"><button class="thumb-del" onclick="removeFoto(${idx},this)">×</button>`;
+      document.getElementById('thumb-grid').appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeFoto(idx, btn) {
+  photoFiles.splice(idx, 1);
+  btn.parentElement.remove();
+  // Re-index buttons
+  document.querySelectorAll('.thumb-del').forEach((b, i) => {
+    b.setAttribute('onclick', `removeFoto(${i},this)`);
+  });
+}
+
+// ─── PRINT ────────────────────────────────────────────────
+function imprimirFicha() {
+  const f = {};
+  const get = id => document.getElementById(id)?.value?.trim() || '';
+  f.tipo          = getRadio('tipo');
+  f.bairro        = get('f-bairro');
+  f.cond_edificio = get('f-cond-ed');
+  f.endereco      = get('f-endereco');
+  f.cidade        = get('f-cidade') || 'Teresina';
+  f.ponto_ref     = get('f-ponto-ref');
+  f.valor         = get('f-valor');
+  f.area_priv     = get('f-area-priv');
+  f.area_const    = get('f-area-const');
+  f.quartos       = get('f-quartos');
+  f.suites        = get('f-suites');
+  f.banheiros     = get('f-banheiros');
+  f.andar         = get('f-andar');
+  f.cond_mensal   = get('f-cond-mensal');
+  f.iptu          = get('f-iptu');
+  f.ano_const     = get('f-ano-const');
+  f.vagas         = get('f-vagas');
+  f.nome_prop     = get('f-nome-prop');
+  f.cpf_prop      = get('f-cpf-prop');
+  f.rg_prop       = get('f-rg-prop');
+  f.tel_prop      = get('f-tel-prop');
+  f.email_prop    = get('f-email-prop');
+  f.prof_prop     = get('f-prof-prop');
+  f.est_civil     = document.getElementById('f-est-civil').value;
+  f.nome_conj     = get('f-nome-conj');
+  f.tel_conj      = get('f-tel-conj');
+  f.email_conj    = get('f-email-conj');
+  f.regime        = document.getElementById('f-regime').value;
+  f.exclusiv      = getRadio('exclusiv');
+  f.vig_ini       = get('f-vig-ini');
+  f.vig_fim       = get('f-vig-fim');
+  f.ambientes     = getChecks('f-ambientes').join(', ');
+  f.lazer         = getChecks('f-lazer').join(', ');
+  f.situacao      = getRadio('situacao');
+  f.urgencia      = getRadio('urgencia');
+  f.obs_geral     = get('f-obs-geral');
+  f.data          = new Date().toLocaleDateString('pt-BR');
+
+  const fmtVal = v => v ? `R$ ${Number(v).toLocaleString('pt-BR')}` : '';
+
+  printFicha(f, fmtVal);
+}
+
+function imprimirFichaRecord(id) {
+  const r = allRecords.find(x => x.id === id);
+  if (!r) return;
+  const f = r.fields;
+  const fmtVal = v => v ? `R$ ${Number(v).toLocaleString('pt-BR')}` : '';
+  const mf = {
+    tipo: f.tipo, bairro: f.bairro, cond_edificio: f.cond_edificio,
+    endereco: f.endereco, cidade: f.cidade, ponto_ref: f.ponto_ref,
+    valor: fmtVal(f.valor), area_priv: f.area_priv, area_const: f.area_const,
+    quartos: f.quartos, suites: f.suites, banheiros: f.banheiros,
+    andar: f.andar, cond_mensal: fmtVal(f.cond_mensal), iptu: fmtVal(f.iptu_mensal),
+    ano_const: f.ano_const, vagas: f.vagas,
+    nome_prop: f.nome_prop, cpf_prop: f.cpf_prop, rg_prop: f.rg_prop,
+    tel_prop: f.tel_prop, email_prop: f.email_prop, prof_prop: f.prof_prop,
+    est_civil: f.estado_civil, nome_conj: f.nome_conj, tel_conj: f.tel_conj,
+    email_conj: f.email_conj, regime: f.regime_bens,
+    exclusiv: f.exclusividade, vig_ini: f.vigencia_ini, vig_fim: f.vigencia_fim,
+    ambientes: Array.isArray(f.ambientes) ? f.ambientes.join(', ') : '',
+    lazer: Array.isArray(f.lazer) ? f.lazer.join(', ') : '',
+    situacao: f.situacao, urgencia: f.urgencia, obs_geral: f.obs_geral,
+    data: f.data_captacao ? new Date(f.data_captacao+'T12:00:00').toLocaleDateString('pt-BR') : ''
+  };
+  printFicha(mf, v => v);
+}
+
+function printFicha(f, fmt) {
+  const p = v => v || '_______________________________';
+  document.getElementById('print-area').innerHTML = `
+    <div class="prt-hdr">
+      <img src="logo.svg" alt="Luàna Guedes Imóveis" style="height:40px;margin-bottom:8px">
+      <p>CRECI/PI 4114 | @luanaguedes.imoveis | (86) 9XXXX-XXXX</p>
+    </div>
+    <div class="prt-title">FICHA DE CAPTAÇÃO E AUTORIZAÇÃO DE INTERMEDIAÇÃO — VENDA DE IMÓVEL</div>
+
+    <div class="prt-sec">
+      <div class="prt-sec-title">1. Identificação do Imóvel</div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Tipo</label><p>${p(f.tipo)}</p></div>
+        <div class="prt-field"><label>Bairro</label><p>${p(f.bairro)}</p></div>
+      </div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Condomínio/Edifício</label><p>${p(f.cond_edificio)}</p></div>
+        <div class="prt-field"><label>Cidade</label><p>${p(f.cidade)}</p></div>
+      </div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Endereço</label><p>${p(f.endereco)}</p></div>
+        <div class="prt-field"><label>Ponto de referência</label><p>${p(f.ponto_ref)}</p></div>
+      </div>
+    </div>
+
+    <div class="prt-sec">
+      <div class="prt-sec-title">2. Características Principais</div>
+      <div class="prt-row r3">
+        <div class="prt-field"><label>Valor de Venda</label><p>${p(fmt(f.valor))}</p></div>
+        <div class="prt-field"><label>Área Privativa (m²)</label><p>${p(f.area_priv)}</p></div>
+        <div class="prt-field"><label>Área Construída (m²)</label><p>${p(f.area_const)}</p></div>
+      </div>
+      <div class="prt-row r3">
+        <div class="prt-field"><label>Quartos / Suítes</label><p>${p(f.quartos ? f.quartos+'/'+f.suites : '')}</p></div>
+        <div class="prt-field"><label>Banheiros</label><p>${p(f.banheiros)}</p></div>
+        <div class="prt-field"><label>Vagas de Garagem</label><p>${p(f.vagas)}</p></div>
+      </div>
+      <div class="prt-row r3">
+        <div class="prt-field"><label>Andar</label><p>${p(f.andar)}</p></div>
+        <div class="prt-field"><label>Condomínio (R$/mês)</label><p>${p(fmt(f.cond_mensal))}</p></div>
+        <div class="prt-field"><label>IPTU (R$/mês)</label><p>${p(fmt(f.iptu))}</p></div>
+      </div>
+      ${f.ambientes ? `<div class="prt-field"><label>Diferenciais</label><p>${f.ambientes}</p></div>` : ''}
+      ${f.lazer ? `<div class="prt-field" style="margin-top:6px"><label>Lazer/Condomínio</label><p>${f.lazer}</p></div>` : ''}
+    </div>
+
+    <div class="prt-sec">
+      <div class="prt-sec-title">3. Dados do Proprietário</div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Nome Completo</label><p>${p(f.nome_prop)}</p></div>
+        <div class="prt-field"><label>Profissão</label><p>${p(f.prof_prop)}</p></div>
+      </div>
+      <div class="prt-row r3">
+        <div class="prt-field"><label>CPF</label><p>${p(f.cpf_prop)}</p></div>
+        <div class="prt-field"><label>RG</label><p>${p(f.rg_prop)}</p></div>
+        <div class="prt-field"><label>Estado Civil</label><p>${p(f.est_civil)}</p></div>
+      </div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Telefone</label><p>${p(f.tel_prop)}</p></div>
+        <div class="prt-field"><label>E-mail</label><p>${p(f.email_prop)}</p></div>
+      </div>
+      ${f.nome_conj ? `
+      <div style="margin-top:10px"><strong style="font-size:11px;text-transform:uppercase">Cônjuge</strong></div>
+      <div class="prt-row" style="margin-top:6px">
+        <div class="prt-field"><label>Nome</label><p>${f.nome_conj}</p></div>
+        <div class="prt-field"><label>Regime de bens</label><p>${p(f.regime)}</p></div>
+      </div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Telefone</label><p>${p(f.tel_conj)}</p></div>
+        <div class="prt-field"><label>E-mail</label><p>${p(f.email_conj)}</p></div>
+      </div>` : ''}
+    </div>
+
+    <div class="prt-sec">
+      <div class="prt-sec-title">4. Autorização de Intermediação</div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Comissão</label><p>5% (cinco por cento) sobre o valor total da venda</p></div>
+        <div class="prt-field"><label>Exclusividade</label><p>${p(f.exclusiv)}</p></div>
+      </div>
+      <div class="prt-row">
+        <div class="prt-field"><label>Vigência — Início</label><p>${p(f.vig_ini)}</p></div>
+        <div class="prt-field"><label>Vigência — Fim</label><p>${p(f.vig_fim)}</p></div>
+      </div>
+      <div class="prt-legal">
+        O(a) proprietário(a) autoriza Luàna Guedes, CRECI 4114, a oferecer, intermediar e divulgar o imóvel descrito nesta ficha em meios físicos e digitais, inclusive redes sociais, portais imobiliários, aplicativos de mensagens, anúncios, impulsionamentos, placas, fotos e vídeos, podendo compartilhar a oferta com corretores parceiros, bem como receber propostas e contraofertas, sempre sujeitas à aceitação formal do(a) proprietário(a). A comissão de 5% incidirá sobre o valor total da venda e será devida quando houver aceitação da proposta e recebimento de sinal ou princípio de pagamento. O(a) proprietário(a) declara serem verdadeiras as informações prestadas, possuir legitimidade e poderes para autorizar a comercialização, ter informado os ônus, dívidas, restrições e vícios conhecidos, e autoriza o tratamento dos dados pessoais estritamente para a intermediação imobiliária e cumprimento de obrigações legais.
+      </div>
+    </div>
+
+    <div class="prt-sigs">
+      <div class="prt-sig">
+        <div class="prt-sig-line"></div>
+        <p><strong>Proprietário(a)</strong><br>Nome e assinatura</p>
+      </div>
+      <div class="prt-sig">
+        <div class="prt-sig-line"></div>
+        <p><strong>Cônjuge/Coproprietário(a)</strong><br>Quando aplicável</p>
+      </div>
+      <div class="prt-sig">
+        <div class="prt-sig-line"></div>
+        <p><strong>Luàna Guedes</strong><br>CRECI/PI 4114</p>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:10px;margin-top:20px;color:#666">
+      Ficha gerada em ${f.data || new Date().toLocaleDateString('pt-BR')} — Luàna Guedes Imóveis · CRECI/PI 4114
+    </p>
+  `;
+  window.print();
+}
+
+// ─── SETTINGS ────────────────────────────────────────────
+function showOvSettings() {
+  document.getElementById('cfg-pat').value    = S.pat;
+  document.getElementById('cfg-baseid').value = S.baseId;
+  document.getElementById('ov-settings').classList.add('on');
+}
+function closeOvSettings() {
+  document.getElementById('ov-settings').classList.remove('on');
+}
+async function saveSettings() {
+  const pat    = document.getElementById('cfg-pat').value.trim();
+  const baseId = document.getElementById('cfg-baseid').value.trim();
+  const pwd    = document.getElementById('cfg-pwd').value;
+  if (pat)    S.pat    = pat;
+  if (baseId) S.baseId = baseId;
+  if (pwd)    S.pwdHash = await sha256(pwd);
+  closeOvSettings();
+  toast('Configurações salvas!', 'ok');
+}
+
+// ─── TOAST ───────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show' + (type ? ' '+type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = '', 3200);
+}
+
+// ─── KEYBOARD ────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeDetail();
+    closeOvSettings();
+  }
+});
+
+// ─── INIT ────────────────────────────────────────────────
+(function init() {
+  // Check if already authenticated this session
+  if (sessionStorage.getItem('lg_auth') === '1' && S.pat && S.baseId) {
+    show('s-app', 'flex');
+    enterApp();
+    return;
+  }
+  // Show setup if never configured
+  if (!S.pwdHash && !S.pat) {
+    // Still show login — clicking "enter" with empty password on first run leads to setup
+    show('s-login');
+    return;
+  }
+  show('s-login');
+  document.getElementById('pwd-inp').focus();
+})();
+</script>
+</body>
+</html>
