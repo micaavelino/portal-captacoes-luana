@@ -1810,20 +1810,33 @@ function printFicha(f, fmt, extras) {
           <div class="fp-igr" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:5px">
             <div><span class="fp-lbl">Andar</span><div class="fp-val-sm">${V(f.andar)}</div></div>
             <div><span class="fp-lbl">Cond. R$/mês</span><div class="fp-val-sm">${V(fmt(f.cond_mensal))}</div></div>
-            <div><span class="fp-lbl">IPTU R$/mês</span><div class="fp-val-sm">${V(fmt(f.iptu))}</div></div>
+            <div><span class="fp-lbl">IPTU R$/ano</span><div class="fp-val-sm">${V(fmt(f.iptu))}</div></div>
           </div>
           <div class="fp-igr" style="grid-template-columns:2fr 1fr;margin-bottom:5px">
             <div><span class="fp-lbl">Construtora</span><div class="fp-val-sm"></div></div>
             <div><span class="fp-lbl">Ano de Construção</span><div class="fp-val-sm">${V(f.ano_const)}</div></div>
           </div>
           <div class="fp-sep">
-            <span class="fp-lbl">Vagas de Garagem</span>
-            <div class="fp-mini">
-              <span style="font-size:13px;font-weight:700;border-bottom:2px solid #555;min-width:30px;display:inline-block;text-align:center">${V(f.vagas)}</span>
-              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasCob,'Cobertas')}</span> Cobertas</span>
-              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasCob,'Descobertas')}</span> Descobertas</span>
-              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasConf,'Independentes')}</span> Independentes</span>
-              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasConf,'Gaveta')}</span> Gaveta</span>
+            <span class="fp-lbl" style="margin-bottom:5px">Vagas de Garagem</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px">
+              <div style="border:1px solid #aaa;padding:5px 7px;border-radius:2px">
+                <div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#444;margin-bottom:3px">Cobertas</div>
+                <div style="display:flex;align-items:baseline;gap:6px">
+                  <span style="font-size:9px">Qtd.</span>
+                  <span style="font-size:15px;font-weight:700;border-bottom:2px solid #555;min-width:28px;display:inline-block;text-align:center">${V(E.vagasCob)&&!isNaN(E.vagasCob)?E.vagasCob:''}</span>
+                  <span class="fp-chk" style="font-size:9.5px"><span class="fp-cm" style="font-size:14px">${chk(E.vagasConf,'Independentes')}</span> Indep.</span>
+                  <span class="fp-chk" style="font-size:9.5px"><span class="fp-cm" style="font-size:14px">${chk(E.vagasConf,'Gaveta')}</span> Gaveta</span>
+                </div>
+              </div>
+              <div style="border:1px solid #aaa;padding:5px 7px;border-radius:2px">
+                <div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#444;margin-bottom:3px">Descobertas</div>
+                <div style="display:flex;align-items:baseline;gap:6px">
+                  <span style="font-size:9px">Qtd.</span>
+                  <span style="font-size:15px;font-weight:700;border-bottom:2px solid #555;min-width:28px;display:inline-block;text-align:center">${V(E.vagasCob)&&E.vagasCob==='Descobertas'?f.vagas:''}</span>
+                  <span class="fp-chk" style="font-size:9.5px"><span class="fp-cm" style="font-size:14px">○</span> Indep.</span>
+                  <span class="fp-chk" style="font-size:9.5px"><span class="fp-cm" style="font-size:14px">○</span> Gaveta</span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="fp-sep">
@@ -1858,6 +1871,10 @@ function printFicha(f, fmt, extras) {
             <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Energia solar')}</span> Energia Solar</div>
             <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Elevador privativo')}</span> Elevador Privativo</div>
           </div>
+          <div style="margin-top:5px">
+            <div class="fp-obs-ln"></div>
+            <div class="fp-obs-ln"></div>
+          </div>
         </div>
       </div>
 
@@ -1874,6 +1891,10 @@ function printFicha(f, fmt, extras) {
             <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Coworking')}</span> Coworking</div>
             <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Portaria 24h')}</span> Portaria 24h</div>
             <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Gerador')}</span> Gerador</div>
+          </div>
+          <div style="margin-top:5px">
+            <div class="fp-obs-ln"></div>
+            <div class="fp-obs-ln"></div>
           </div>
         </div>
       </div>
@@ -1909,6 +1930,9 @@ function printFicha(f, fmt, extras) {
             <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Financiado')}</span> Financiado</div>
             <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Financiável')}</span> Financiável</div>
             <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Inventário')}</span> Inventário</div>
+          </div>
+          <div style="margin-top:5px">
+            <div class="fp-obs-ln"></div>
           </div>
         </div>
       </div>
@@ -2014,30 +2038,25 @@ function printFicha(f, fmt, extras) {
     </div>
   </div>
 
-  <!-- COMPLEMENTAR -->
-  <div class="fp-compl">
-    <div>
-      <div class="fp-compl-lbl">Exclusividade</div>
-      <div class="fp-mini">
-        <span class="fp-chk"><span class="fp-cm">${chk(f.exclusiv,'Sim')}</span> Sim</span>
-        <span class="fp-chk"><span class="fp-cm">${chk(f.exclusiv,'Não')}</span> Não</span>
-      </div>
-    </div>
+  <!-- COMISSÃO -->
+  <div style="border:2px solid #000;padding:8px 14px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#333">Comissão sobre a Venda</div>
     <div style="text-align:center">
-      <div style="font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:4px">Percentual de Comissão</div>
-      <div style="font-size:13px;font-weight:700">5% (CINCO POR CENTO)</div>
+      <span style="font-size:26px;font-weight:900;line-height:1;color:#000">5%</span>
+      <span style="font-size:11px;font-weight:700;color:#333;margin-left:6px">CINCO POR CENTO</span>
     </div>
-    <div>
-      <div style="font-size:9px;color:#333">Teresina, _______ de ________________________ de ${new Date().getFullYear()}</div>
-    </div>
+    <div style="font-size:9px;color:#555">sobre o valor total da transação</div>
   </div>
 
   <!-- LEGAL -->
   <div class="fp-legal">
-    O(a) proprietário(a) autoriza Luàna Guedes, CRECI-PI 4114, a oferecer, intermediar e divulgar o imóvel descrito nesta ficha em meios físicos e digitais, inclusive redes sociais, portais imobiliários e placas. A comissão de 5% incidirá sobre o valor total da venda, sendo devida quando houver aceitação da proposta e recebimento de sinal. O(a) proprietário(a) declara que as informações prestadas são verdadeiras e que possui legitimidade para autorizar a comercialização do imóvel, respondendo civil e criminalmente por qualquer omissão ou falsidade.
+    O(a) proprietário(a) autoriza Luàna Guedes, CRECI-PI 4114, a oferecer, intermediar e divulgar o imóvel descrito nesta ficha em meios físicos e digitais, inclusive redes sociais, portais imobiliários e placas. A comissão de <strong>5% (cinco por cento)</strong> incidirá sobre o valor total da venda, sendo devida quando houver aceitação da proposta e recebimento de sinal. O(a) proprietário(a) declara que as informações prestadas são verdadeiras e que possui legitimidade para autorizar a comercialização do imóvel.
   </div>
 
   <!-- ASSINATURAS -->
+  <div style="text-align:center;font-size:10px;margin-bottom:8px">
+    Teresina, _______ de ________________________________ de ___________
+  </div>
   <div class="fp-sigs">
     <div>
       <div class="fp-sig-line"></div>
@@ -2048,10 +2067,6 @@ function printFicha(f, fmt, extras) {
       <div class="fp-sig-txt"><strong>Luàna Guedes</strong><br>Corretora · CRECI-PI 4114</div>
     </div>
   </div>
-
-  <p style="text-align:center;font-size:8px;color:#666;margin-top:10px">
-    Ficha gerada em ${f.data || new Date().toLocaleDateString('pt-BR')} · Luàna Guedes Imóveis · CRECI-PI 4114
-  </p>
 
 </div>
   `;
