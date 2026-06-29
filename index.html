@@ -1718,41 +1718,43 @@ function printFicha(f, fmt, extras) {
   const cA   = (arr, v) => (Array.isArray(arr) ? arr : []).some(x => x.toLowerCase() === v.toLowerCase()) ? '●' : '○';
   const V    = v => v || '';
 
-  document.getElementById('print-area').innerHTML = `
-<style>
-  #print-area,#print-area *{box-sizing:border-box;margin:0;padding:0}
-  .fp{font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.4;width:100%}
-  .fp-hdr{display:flex;align-items:center;justify-content:space-between;border:2px solid #000;padding:8px 14px;margin-bottom:7px}
+  const _pw = window.open('','_blank','menubar=no,toolbar=no,location=no,status=no');
+  if(!_pw){alert('Habilite pop-ups para imprimir a ficha.');return;}
+  _pw.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Ficha — Luàna Guedes Imóveis</title><style>
+@page{margin:7mm;size:A4 portrait}
+*{box-sizing:border-box;margin:0;padding:0}
+body{zoom:.88;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.35}
+  .fp{width:100%}
+  .fp-hdr{display:flex;align-items:center;justify-content:space-between;border:2px solid #000;padding:6px 12px;margin-bottom:6px}
   .fp-hdr-info{text-align:right;font-size:9.5px;line-height:1.7;font-weight:600}
-  .fp-title{font-size:14px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:1px;background:#f2f2f2;border:1.5px solid #000;padding:7px;margin-bottom:8px}
-  .fp-id{display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px;margin-bottom:5px}
-  .fp-id2{display:grid;grid-template-columns:3fr 1fr;gap:7px;margin-bottom:10px}
-  .fp-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;color:#333;display:block;margin-bottom:2px;letter-spacing:.2px}
-  .fp-val{border-bottom:2px solid #555;min-height:22px;font-size:11px;padding:2px 0}
-  .fp-val-sm{border-bottom:2px solid #555;min-height:20px;font-size:11px;padding:1px 0}
-  .fp-body{display:grid;grid-template-columns:58% 42%;gap:8px;margin-bottom:8px;align-items:start}
-  .fp-sec{border:1px solid #444;margin-bottom:6px;break-inside:avoid}
-  .fp-sh{background:#555;color:#fff;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:5px 8px;margin:0 0 0}
-  .fp-sb{padding:6px 8px 8px}
-  .fp-chk{font-size:11px;line-height:2.2;white-space:nowrap;display:flex;align-items:center;gap:5px}
-  .fp-cm{font-size:16px;line-height:1;display:inline-block;vertical-align:middle}
+  .fp-title{font-size:13px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:1px;background:#f2f2f2;border:1.5px solid #000;padding:6px;margin-bottom:7px}
+  .fp-id{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin-bottom:4px}
+  .fp-id2{display:grid;grid-template-columns:3fr 1fr;gap:6px;margin-bottom:7px}
+  .fp-lbl{font-size:8px;font-weight:700;text-transform:uppercase;color:#333;display:block;margin-bottom:1px;letter-spacing:.2px}
+  .fp-val{border-bottom:2px solid #555;min-height:20px;font-size:11px;padding:1px 0}
+  .fp-val-sm{border-bottom:2px solid #555;min-height:18px;font-size:11px;padding:1px 0}
+  .fp-body{display:grid;grid-template-columns:58% 42%;gap:7px;margin-bottom:7px;align-items:start}
+  .fp-sec{border:1px solid #444;margin-bottom:5px;break-inside:avoid}
+  .fp-sh{background:#555;color:#fff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:4px 7px}
+  .fp-sb{padding:5px 7px 6px}
+  .fp-chk{font-size:10.5px;line-height:2;white-space:nowrap;display:flex;align-items:center;gap:4px}
+  .fp-cm{font-size:15px;line-height:1;display:inline-block;vertical-align:middle}
   .fp-g2{display:grid;grid-template-columns:1fr 1fr}
   .fp-g3{display:grid;grid-template-columns:1fr 1fr 1fr}
-  .fp-mini{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px}
-  .fp-igr{display:grid;gap:5px;margin-bottom:5px}
-  .fp-sep{border-top:1px dashed #bbb;margin:6px 0 5px;padding-top:5px}
-  .fp-obs-ln{border-bottom:1.5px solid #999;min-height:24px;margin-bottom:7px}
-  .fp-prop{border:1.5px solid #333;margin-bottom:7px}
-  .fp-ph{background:#222;color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;padding:5px 9px;letter-spacing:.3px}
-  .fp-pb{padding:7px 9px}
-  .fp-pr{display:grid;gap:6px;margin-bottom:6px}
-  .fp-compl{display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;border:1.5px solid #333;padding:7px 9px;margin-bottom:7px;align-items:center}
+  .fp-mini{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:3px}
+  .fp-igr{display:grid;gap:4px;margin-bottom:4px}
+  .fp-sep{border-top:1px dashed #bbb;margin:5px 0 4px;padding-top:4px}
+  .fp-obs-ln{border-bottom:1.5px solid #999;min-height:20px;margin-bottom:5px}
+  .fp-prop{border:1.5px solid #333;margin-bottom:6px}
+  .fp-ph{background:#222;color:#fff;font-size:9.5px;font-weight:700;text-transform:uppercase;padding:4px 8px;letter-spacing:.3px}
+  .fp-pb{padding:6px 8px}
+  .fp-pr{display:grid;gap:5px;margin-bottom:5px}
   .fp-compl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
-  .fp-legal{font-size:8.5px;line-height:1.7;border:1px solid #ccc;padding:8px;margin-bottom:8px}
+  .fp-legal{font-size:8px;line-height:1.65;border:1px solid #ccc;padding:7px;margin-bottom:7px}
   .fp-sigs{display:grid;grid-template-columns:1fr 1fr;gap:40px}
-  .fp-sig-line{border-bottom:1.5px solid #000;height:45px;margin-bottom:5px}
-  .fp-sig-txt{font-size:10px;text-align:center;line-height:1.6}
-</style>
+  .fp-sig-line{border-bottom:1.5px solid #000;height:38px;margin-bottom:4px}
+  .fp-sig-txt{font-size:9.5px;text-align:center;line-height:1.5}
+</style></head><body>
 <div class="fp">
 
   <!-- CABEÇALHO -->
@@ -2069,8 +2071,9 @@ function printFicha(f, fmt, extras) {
   </div>
 
 </div>
-  `;
-  window.print();
+</body></html>`);
+  _pw.document.close();
+  setTimeout(()=>{_pw.focus();_pw.print();},350);
 }
 
 // ─── SETTINGS ────────────────────────────────────────────
