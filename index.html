@@ -1720,267 +1720,336 @@ function printFicha(f, fmt, extras) {
 
   document.getElementById('print-area').innerHTML = `
 <style>
-  @page{margin:10mm;size:A4 portrait}
   #print-area,#print-area *{box-sizing:border-box;margin:0;padding:0}
   .fp{font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.4;width:100%}
-  .fp-hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:2.5px solid #000;padding-bottom:8px;margin-bottom:8px}
-  .fp-brand{font-size:9px;text-align:right;line-height:1.6}
-  .fp-title{font-size:13px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:.5px;border:2px solid #000;padding:6px 10px;margin-bottom:9px}
-  .fp-imovel{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin-bottom:5px}
-  .fp-imovel2{display:grid;grid-template-columns:3fr 1fr;gap:6px;margin-bottom:10px}
-  .fp-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;color:#333;display:block;margin-bottom:2px}
-  .fp-val{border-bottom:1.5px solid #777;min-height:20px;font-size:11px;padding:2px 0;word-break:break-word}
-  .fp-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px}
-  .fp-sec{border:1px solid #111;padding:5px 7px 7px;margin-bottom:6px;break-inside:avoid}
-  .fp-sh{background:#111;color:#fff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:4px 6px;margin:-5px -7px 6px}
-  .fp-chk{font-size:11px;line-height:2.2;white-space:nowrap}
+  .fp-hdr{display:flex;align-items:center;justify-content:space-between;border:2px solid #000;padding:8px 14px;margin-bottom:7px}
+  .fp-hdr-info{text-align:right;font-size:9.5px;line-height:1.7;font-weight:600}
+  .fp-title{font-size:14px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:1px;background:#f2f2f2;border:1.5px solid #000;padding:7px;margin-bottom:8px}
+  .fp-id{display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px;margin-bottom:5px}
+  .fp-id2{display:grid;grid-template-columns:3fr 1fr;gap:7px;margin-bottom:10px}
+  .fp-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;color:#333;display:block;margin-bottom:2px;letter-spacing:.2px}
+  .fp-val{border-bottom:2px solid #555;min-height:22px;font-size:11px;padding:2px 0}
+  .fp-val-sm{border-bottom:2px solid #555;min-height:20px;font-size:11px;padding:1px 0}
+  .fp-body{display:grid;grid-template-columns:58% 42%;gap:8px;margin-bottom:8px;align-items:start}
+  .fp-sec{border:1px solid #444;margin-bottom:6px;break-inside:avoid}
+  .fp-sh{background:#555;color:#fff;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:5px 8px;margin:0 0 0}
+  .fp-sb{padding:6px 8px 8px}
+  .fp-chk{font-size:11px;line-height:2.2;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .fp-cm{font-size:16px;line-height:1;display:inline-block;vertical-align:middle}
   .fp-g2{display:grid;grid-template-columns:1fr 1fr}
-  .fp-mini{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;align-items:center}
-  .fp-obs-ln{border-bottom:1px solid #999;min-height:22px;margin-bottom:6px;font-size:11px}
-  .fp-prop{border:1px solid #111;padding:7px 8px;margin-bottom:7px}
-  .fp-pr{display:grid;gap:6px;margin-bottom:5px}
-  .fp-compl{display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;border:1px solid #111;padding:7px 8px;margin-bottom:6px;align-items:center}
-  .fp-legal{font-size:8.5px;line-height:1.6;border:1px solid #ccc;padding:7px;margin-bottom:8px}
-  .fp-sigs{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-  .fp-sig-line{border-bottom:1px solid #000;height:40px;margin-bottom:5px}
-  .fp-sig-txt{font-size:9.5px;text-align:center}
-  .fp-sr{display:grid;gap:5px;margin-bottom:4px}
-  .fp-sep{font-size:9px;font-weight:700;margin:5px 0 3px}
+  .fp-g3{display:grid;grid-template-columns:1fr 1fr 1fr}
+  .fp-mini{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px}
+  .fp-igr{display:grid;gap:5px;margin-bottom:5px}
+  .fp-sep{border-top:1px dashed #bbb;margin:6px 0 5px;padding-top:5px}
+  .fp-obs-ln{border-bottom:1.5px solid #999;min-height:24px;margin-bottom:7px}
+  .fp-prop{border:1.5px solid #333;margin-bottom:7px}
+  .fp-ph{background:#222;color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;padding:5px 9px;letter-spacing:.3px}
+  .fp-pb{padding:7px 9px}
+  .fp-pr{display:grid;gap:6px;margin-bottom:6px}
+  .fp-compl{display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;border:1.5px solid #333;padding:7px 9px;margin-bottom:7px;align-items:center}
+  .fp-compl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+  .fp-legal{font-size:8.5px;line-height:1.7;border:1px solid #ccc;padding:8px;margin-bottom:8px}
+  .fp-sigs{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .fp-sig-line{border-bottom:1.5px solid #000;height:45px;margin-bottom:5px}
+  .fp-sig-txt{font-size:10px;text-align:center;line-height:1.6}
 </style>
 <div class="fp">
 
+  <!-- CABEÇALHO -->
   <div class="fp-hdr">
-    <img src="logo.svg" alt="Luàna Guedes" style="height:30px">
-    <div class="fp-brand">CRECI/PI 4114<br>@luanaguedes.imoveis</div>
+    <img src="logo.svg" alt="Luàna Guedes" style="height:38px;max-width:200px">
+    <div class="fp-hdr-info">CRECI-PI 4114<br>@luanaguedes.imoveis</div>
   </div>
   <div class="fp-title">Ficha de Captação — Imóvel à Venda</div>
 
-  <div class="fp-imovel">
+  <!-- IDENTIFICAÇÃO -->
+  <div class="fp-id">
     <div><span class="fp-lbl">Imóvel / Condomínio / Edifício</span><div class="fp-val">${V(f.cond_edificio)}</div></div>
     <div><span class="fp-lbl">Bairro</span><div class="fp-val">${V(f.bairro)}</div></div>
     <div><span class="fp-lbl">Cidade</span><div class="fp-val">${V(f.cidade)||'Teresina'}</div></div>
   </div>
-  <div class="fp-imovel2">
+  <div class="fp-id2" style="margin-bottom:8px">
     <div><span class="fp-lbl">Ponto de Referência</span><div class="fp-val">${V(f.ponto_ref)}</div></div>
     <div><span class="fp-lbl">BL / Unidade</span><div class="fp-val"></div></div>
   </div>
 
+  <!-- CORPO 2 COLUNAS -->
   <div class="fp-body">
 
-    <!-- COL 1 -->
+    <!-- ═══ COLUNA ESQUERDA ═══ -->
     <div>
+
+      <!-- 1. TIPO -->
       <div class="fp-sec">
         <div class="fp-sh">1 — Tipo de Imóvel</div>
-        <div class="fp-g2">
-          <div class="fp-chk">${chk(f.tipo,'Casa')} Casa</div>
-          <div class="fp-chk">${chk(f.tipo,'Apartamento')} Apartamento</div>
-          <div class="fp-chk">${chk(f.tipo,'Terreno')} Terreno</div>
-          <div class="fp-chk">${chk(f.tipo,'Cobertura')} Cobertura</div>
-          <div class="fp-chk">${chk(f.tipo,'Comercial')} Comercial</div>
-          <div class="fp-chk">${chk(f.tipo,'Outro')} Outro</div>
+        <div class="fp-sb">
+          <div class="fp-g3">
+            <div class="fp-chk"><span class="fp-cm">${chk(f.tipo,'Casa')}</span> Casa</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(f.tipo,'Apartamento')}</span> Apartamento</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(f.tipo,'Terreno')}</span> Terreno</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(f.tipo,'Cobertura')}</span> Cobertura</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(f.tipo,'Comercial')}</span> Comercial</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(f.tipo,'Outro')}</span> Outro</div>
+          </div>
         </div>
       </div>
 
+      <!-- 2. CARACTERÍSTICAS -->
       <div class="fp-sec">
-        <div class="fp-sh">2 — Características</div>
-        <div class="fp-sr" style="grid-template-columns:1fr">
-          <div><span class="fp-lbl">Valor (R$)</span><div class="fp-val">${V(fmt(f.valor))}</div></div>
-        </div>
-        <div class="fp-sr" style="grid-template-columns:1fr 1fr">
-          <div><span class="fp-lbl">Área Priv. m²</span><div class="fp-val">${V(f.area_priv)}</div></div>
-          <div><span class="fp-lbl">Área Const. m²</span><div class="fp-val">${V(f.area_const)}</div></div>
-        </div>
-        <div class="fp-sr" style="grid-template-columns:1fr 1fr 1fr">
-          <div><span class="fp-lbl">Quartos</span><div class="fp-val">${V(f.quartos)}</div></div>
-          <div><span class="fp-lbl">Suítes</span><div class="fp-val">${V(f.suites)}</div></div>
-          <div><span class="fp-lbl">Banheiros</span><div class="fp-val">${V(f.banheiros)}</div></div>
-        </div>
-        <div class="fp-sr" style="grid-template-columns:1fr 1fr">
-          <div><span class="fp-lbl">Andar</span><div class="fp-val">${V(f.andar)}</div></div>
-          <div><span class="fp-lbl">Ano Construção</span><div class="fp-val">${V(f.ano_const)}</div></div>
-        </div>
-        <div class="fp-sr" style="grid-template-columns:1fr 1fr">
-          <div><span class="fp-lbl">Cond. R$/mês</span><div class="fp-val">${V(fmt(f.cond_mensal))}</div></div>
-          <div><span class="fp-lbl">IPTU R$/mês</span><div class="fp-val">${V(fmt(f.iptu))}</div></div>
-        </div>
-        <div style="margin-top:4px"><span class="fp-lbl">Vagas</span>
-          <div style="font-size:8px">${V(f.vagas)||'—'} &nbsp; ${V(E.vagasCob)} &nbsp; ${V(E.vagasConf)}</div>
-        </div>
-        <div style="margin-top:3px"><span class="fp-lbl">Lavabo</span>
-          <div class="fp-mini"><span class="fp-chk">${chk(E.lavabo,'Sim')} Sim</span><span class="fp-chk">${chk(E.lavabo,'Não')} Não</span></div>
-        </div>
-        <div style="margin-top:3px"><span class="fp-lbl">Aceita financiamento</span>
-          <div class="fp-mini"><span class="fp-chk">${chk(E.aceita_fin,'Sim')} Sim</span><span class="fp-chk">${chk(E.aceita_fin,'Não')} Não</span></div>
-        </div>
-        <div style="margin-top:3px"><span class="fp-lbl">Aceita permuta</span>
-          <div class="fp-mini"><span class="fp-chk">${chk(E.aceita_perm,'Sim')} Sim</span><span class="fp-chk">${chk(E.aceita_perm,'Não')} Não</span></div>
-        </div>
-        <div style="margin-top:3px"><span class="fp-lbl">Situação</span>
-          <div class="fp-mini"><span class="fp-chk">${chk(E.situacao,'Ocupado')} Ocupado</span><span class="fp-chk">${chk(E.situacao,'Desocupado')} Desocupado</span></div>
-        </div>
-        <div style="margin-top:3px"><span class="fp-lbl">Já anunciado</span>
-          <div class="fp-mini"><span class="fp-chk">${chk(E.ja_anunciado,'Sim')} Sim</span><span class="fp-chk">${chk(E.ja_anunciado,'Não')} Não</span></div>
+        <div class="fp-sh">2 — Características do Imóvel</div>
+        <div class="fp-sb">
+          <div class="fp-igr" style="grid-template-columns:1fr 1fr;margin-bottom:5px">
+            <div><span class="fp-lbl">Valor de Venda (R$)</span><div class="fp-val-sm">${V(fmt(f.valor))}</div></div>
+            <div><span class="fp-lbl">Área Privativa (m²)</span><div class="fp-val-sm">${V(f.area_priv)}</div></div>
+          </div>
+          <div class="fp-igr" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:5px">
+            <div><span class="fp-lbl">Quartos</span><div class="fp-val-sm">${V(f.quartos)}</div></div>
+            <div><span class="fp-lbl">Suítes</span><div class="fp-val-sm">${V(f.suites)}</div></div>
+            <div><span class="fp-lbl">Banheiros</span><div class="fp-val-sm">${V(f.banheiros)}</div></div>
+          </div>
+          <div class="fp-igr" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:5px">
+            <div><span class="fp-lbl">Andar</span><div class="fp-val-sm">${V(f.andar)}</div></div>
+            <div><span class="fp-lbl">Cond. R$/mês</span><div class="fp-val-sm">${V(fmt(f.cond_mensal))}</div></div>
+            <div><span class="fp-lbl">IPTU R$/mês</span><div class="fp-val-sm">${V(fmt(f.iptu))}</div></div>
+          </div>
+          <div class="fp-igr" style="grid-template-columns:2fr 1fr;margin-bottom:5px">
+            <div><span class="fp-lbl">Construtora</span><div class="fp-val-sm"></div></div>
+            <div><span class="fp-lbl">Ano de Construção</span><div class="fp-val-sm">${V(f.ano_const)}</div></div>
+          </div>
+          <div class="fp-sep">
+            <span class="fp-lbl">Vagas de Garagem</span>
+            <div class="fp-mini">
+              <span style="font-size:13px;font-weight:700;border-bottom:2px solid #555;min-width:30px;display:inline-block;text-align:center">${V(f.vagas)}</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasCob,'Cobertas')}</span> Cobertas</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasCob,'Descobertas')}</span> Descobertas</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasConf,'Independentes')}</span> Independentes</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.vagasConf,'Gaveta')}</span> Gaveta</span>
+            </div>
+          </div>
+          <div class="fp-sep">
+            <div class="fp-mini">
+              <span class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Quitado')}</span> Quitado</span>
+              <span class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Financiado')}</span> Com Financiamento</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.aceita_fin,'Sim')}</span> Aceita Financiar</span>
+            </div>
+            <div class="fp-mini">
+              <span class="fp-chk"><span class="fp-cm">${chk(E.lavabo,'Sim')}</span> Lavabo</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.aceita_perm,'Sim')}</span> Aceita Permuta</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.situacao,'Desocupado')}</span> Desocupado</span>
+              <span class="fp-chk"><span class="fp-cm">${chk(E.situacao,'Ocupado')}</span> Ocupado</span>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- 3. DIFERENCIAIS -->
       <div class="fp-sec">
-        <div class="fp-sh">3 — Piso Predominante</div>
-        <div class="fp-g2">
-          <div class="fp-chk">${chk(E.piso,'Porcelanato')} Porcelanato</div>
-          <div class="fp-chk">${chk(E.piso,'Cerâmica')} Cerâmica</div>
-          <div class="fp-chk">${chk(E.piso,'Mármore')} Mármore</div>
-          <div class="fp-chk">${chk(E.piso,'Granito')} Granito</div>
-          <div class="fp-chk">${chk(E.piso,'Madeira')} Madeira</div>
-          <div class="fp-chk">${chk(E.piso,'Vinílico')} Vinílico</div>
+        <div class="fp-sh">3 — Diferenciais do Imóvel</div>
+        <div class="fp-sb">
+          <div class="fp-g2">
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Varanda')}</span> Varanda</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Área gourmet')}</span> Área Gourmet</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Closet')}</span> Closet</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Escritório')}</span> Escritório</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'DCE')}</span> DCE</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Despensa')}</span> Despensa</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Planejados')}</span> Planejados</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Piscina privativa')}</span> Piscina Privativa</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Energia solar')}</span> Energia Solar</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Elevador privativo')}</span> Elevador Privativo</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- COL 2 -->
+      <!-- 4. LAZER -->
+      <div class="fp-sec">
+        <div class="fp-sh">4 — Lazer / Condomínio</div>
+        <div class="fp-sb">
+          <div class="fp-g2">
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Piscina')}</span> Piscina</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Academia')}</span> Academia</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Salão de festas')}</span> Salão de Festas</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Playground')}</span> Playground</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Quadra')}</span> Quadra</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Coworking')}</span> Coworking</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Portaria 24h')}</span> Portaria 24h</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Gerador')}</span> Gerador</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col esquerda -->
+
+    <!-- ═══ COLUNA DIREITA ═══ -->
     <div>
+
+      <!-- 5. PISO -->
       <div class="fp-sec">
-        <div class="fp-sh">4 — Diferenciais do Imóvel</div>
-        <div class="fp-g2">
-          <div class="fp-chk">${cA(ambArr,'Varanda')} Varanda</div>
-          <div class="fp-chk">${cA(ambArr,'Área gourmet')} Área gourmet</div>
-          <div class="fp-chk">${cA(ambArr,'Closet')} Closet</div>
-          <div class="fp-chk">${cA(ambArr,'Escritório')} Escritório</div>
-          <div class="fp-chk">${cA(ambArr,'DCE')} DCE</div>
-          <div class="fp-chk">${cA(ambArr,'Despensa')} Despensa</div>
-          <div class="fp-chk">${cA(ambArr,'Planejados')} Planejados</div>
-          <div class="fp-chk">${cA(ambArr,'Piscina privativa')} Piscina privativa</div>
-          <div class="fp-chk">${cA(ambArr,'Energia solar')} Energia solar</div>
-          <div class="fp-chk">${cA(ambArr,'Elevador privativo')} Elev. privativo</div>
+        <div class="fp-sh">5 — Piso Predominante</div>
+        <div class="fp-sb">
+          <div class="fp-g2">
+            <div class="fp-chk"><span class="fp-cm">${chk(E.piso,'Porcelanato')}</span> Porcelanato</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.piso,'Cerâmica')}</span> Cerâmica</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.piso,'Mármore')}</span> Mármore</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.piso,'Granito')}</span> Granito</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.piso,'Madeira')}</span> Madeira</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.piso,'Vinílico')}</span> Vinílico</div>
+          </div>
         </div>
       </div>
 
-      <div class="fp-sec">
-        <div class="fp-sh">5 — Lazer / Condomínio</div>
-        <div class="fp-g2">
-          <div class="fp-chk">${cA(lazArr,'Piscina')} Piscina</div>
-          <div class="fp-chk">${cA(lazArr,'Academia')} Academia</div>
-          <div class="fp-chk">${cA(lazArr,'Salão de festas')} Salão festas</div>
-          <div class="fp-chk">${cA(lazArr,'Playground')} Playground</div>
-          <div class="fp-chk">${cA(lazArr,'Quadra')} Quadra</div>
-          <div class="fp-chk">${cA(lazArr,'Coworking')} Coworking</div>
-          <div class="fp-chk">${cA(lazArr,'Portaria 24h')} Portaria 24h</div>
-          <div class="fp-chk">${cA(lazArr,'Gerador')} Gerador</div>
-        </div>
-      </div>
-
+      <!-- 6. DOCUMENTAÇÃO -->
       <div class="fp-sec">
         <div class="fp-sh">6 — Documentação</div>
-        <div class="fp-g2">
-          <div class="fp-chk">${cA(E.docs||[],'Escritura')} Escritura</div>
-          <div class="fp-chk">${cA(E.docs||[],'Registro')} Registro</div>
-          <div class="fp-chk">${cA(E.docs||[],'Quitado')} Quitado</div>
-          <div class="fp-chk">${cA(E.docs||[],'Financiado')} Financiado</div>
-          <div class="fp-chk">${cA(E.docs||[],'Financiável')} Financiável</div>
-          <div class="fp-chk">${cA(E.docs||[],'Inventário')} Inventário</div>
+        <div class="fp-sb">
+          <div class="fp-g2">
+            <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Escritura')}</span> Escritura</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Registro')}</span> Registro</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Quitado')}</span> Quitado</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Financiado')}</span> Financiado</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Financiável')}</span> Financiável</div>
+            <div class="fp-chk"><span class="fp-cm">${cA(E.docs||[],'Inventário')}</span> Inventário</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- COL 3 -->
-    <div>
+      <!-- 7. CHAVES -->
       <div class="fp-sec">
         <div class="fp-sh">7 — Chaves do Imóvel</div>
-        <div>
-          <div class="fp-chk">${chk(E.chaves,'Com Luàna')} Com Luàna</div>
-          <div class="fp-chk">${chk(E.chaves,'Proprietário')} Proprietário</div>
-          <div class="fp-chk">${chk(E.chaves,'Portaria')} Portaria</div>
-          <div class="fp-chk">${chk(E.chaves,'Outro')} Outro</div>
+        <div class="fp-sb">
+          <div class="fp-g2">
+            <div class="fp-chk"><span class="fp-cm">${chk(E.chaves,'Com Luàna')}</span> Com Luàna</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.chaves,'Proprietário')}</span> Proprietário</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.chaves,'Portaria')}</span> Portaria</div>
+            <div class="fp-chk"><span class="fp-cm">${chk(E.chaves,'Outro')}</span> Outro</div>
+          </div>
         </div>
       </div>
 
+      <!-- 8. URGÊNCIA -->
       <div class="fp-sec">
         <div class="fp-sh">8 — Urgência de Venda</div>
-        <div>
-          <div class="fp-chk">${chk(f.urgencia,'Baixa')} Baixa</div>
-          <div class="fp-chk">${chk(f.urgencia,'Média')} Média</div>
-          <div class="fp-chk">${chk(f.urgencia,'Alta')} Alta</div>
+        <div class="fp-sb">
+          <div class="fp-chk"><span class="fp-cm">${chk(f.urgencia,'Baixa')}</span> Baixa</div>
+          <div class="fp-chk"><span class="fp-cm">${chk(f.urgencia,'Média')}</span> Média</div>
+          <div class="fp-chk"><span class="fp-cm">${chk(f.urgencia,'Alta')}</span> Alta</div>
         </div>
       </div>
 
+      <!-- 9. EXCLUSIVIDADE -->
       <div class="fp-sec">
         <div class="fp-sh">9 — Exclusividade</div>
-        <div class="fp-mini" style="margin-bottom:4px">
-          <span class="fp-chk">${chk(f.exclusiv,'Sim')} Sim</span>
-          <span class="fp-chk">${chk(f.exclusiv,'Não')} Não</span>
-        </div>
-        <div class="fp-sr" style="grid-template-columns:1fr 1fr">
-          <div><span class="fp-lbl">Início</span><div class="fp-val">${V(f.vig_ini)}</div></div>
-          <div><span class="fp-lbl">Fim</span><div class="fp-val">${V(f.vig_fim)}</div></div>
+        <div class="fp-sb">
+          <div class="fp-mini" style="margin-bottom:7px">
+            <span class="fp-chk"><span class="fp-cm">${chk(f.exclusiv,'Sim')}</span> Sim</span>
+            <span class="fp-chk"><span class="fp-cm">${chk(f.exclusiv,'Não')}</span> Não</span>
+          </div>
+          <div class="fp-igr" style="grid-template-columns:1fr 1fr">
+            <div><span class="fp-lbl">Vigência Início</span><div class="fp-val-sm">${V(f.vig_ini)}</div></div>
+            <div><span class="fp-lbl">Vigência Fim</span><div class="fp-val-sm">${V(f.vig_fim)}</div></div>
+          </div>
         </div>
       </div>
 
+      <!-- 10. AUTORIZAÇÃO -->
       <div class="fp-sec">
-        <div class="fp-sh">10 — Observações</div>
-        <div class="fp-obs-ln">${V(f.obs_geral)}</div>
-        <div class="fp-obs-ln"></div>
-        <div class="fp-obs-ln"></div>
-        <div class="fp-obs-ln"></div>
+        <div class="fp-sh">10 — Autorização de Divulgação</div>
+        <div class="fp-sb">
+          <div class="fp-g2">
+            <div class="fp-chk"><span class="fp-cm">○</span> Redes sociais</div>
+            <div class="fp-chk"><span class="fp-cm">○</span> Site</div>
+            <div class="fp-chk"><span class="fp-cm">○</span> Placa</div>
+            <div class="fp-chk"><span class="fp-cm">○</span> Parceiros</div>
+          </div>
+        </div>
       </div>
-    </div>
 
+      <!-- 11. OBSERVAÇÕES -->
+      <div class="fp-sec">
+        <div class="fp-sh">11 — Observações</div>
+        <div class="fp-sb">
+          <div class="fp-obs-ln">${V(f.obs_geral)}</div>
+          <div class="fp-obs-ln"></div>
+          <div class="fp-obs-ln"></div>
+          <div class="fp-obs-ln"></div>
+          <div class="fp-obs-ln"></div>
+        </div>
+      </div>
+
+    </div><!-- /col direita -->
   </div><!-- /fp-body -->
 
   <!-- DADOS DO PROPRIETÁRIO -->
   <div class="fp-prop">
-    <div class="fp-sh" style="background:#111;color:#fff;font-size:7.5px;font-weight:700;text-transform:uppercase;padding:2px 5px;margin:-4px -5px 5px">Dados do Proprietário</div>
-    <div class="fp-pr" style="grid-template-columns:2fr 1fr 1fr">
-      <div><span class="fp-lbl">Nome completo</span><div class="fp-val">${V(f.nome_prop)}</div></div>
-      <div><span class="fp-lbl">Profissão</span><div class="fp-val">${V(f.prof_prop)}</div></div>
-      <div><span class="fp-lbl">Estado Civil</span><div class="fp-val">${V(f.est_civil)}</div></div>
+    <div class="fp-ph">Dados do Proprietário</div>
+    <div class="fp-pb">
+      <div class="fp-pr" style="grid-template-columns:2fr 1fr 1fr">
+        <div><span class="fp-lbl">Nome Completo</span><div class="fp-val">${V(f.nome_prop)}</div></div>
+        <div><span class="fp-lbl">Profissão</span><div class="fp-val">${V(f.prof_prop)}</div></div>
+        <div><span class="fp-lbl">Estado Civil</span><div class="fp-val">${V(f.est_civil)}</div></div>
+      </div>
+      <div class="fp-pr" style="grid-template-columns:1fr 1fr 1fr 2fr">
+        <div><span class="fp-lbl">CPF</span><div class="fp-val">${V(f.cpf_prop)}</div></div>
+        <div><span class="fp-lbl">RG</span><div class="fp-val">${V(f.rg_prop)}</div></div>
+        <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_prop)}</div></div>
+        <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_prop)}</div></div>
+      </div>
     </div>
-    <div class="fp-pr" style="grid-template-columns:1fr 1fr 1fr 2fr">
-      <div><span class="fp-lbl">CPF</span><div class="fp-val">${V(f.cpf_prop)}</div></div>
-      <div><span class="fp-lbl">RG</span><div class="fp-val">${V(f.rg_prop)}</div></div>
-      <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_prop)}</div></div>
-      <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_prop)}</div></div>
-    </div>
-    ${f.nome_conj ? `<div class="fp-pr" style="grid-template-columns:2fr 1fr 1fr 1fr">
-      <div><span class="fp-lbl">Cônjuge</span><div class="fp-val">${V(f.nome_conj)}</div></div>
-      <div><span class="fp-lbl">Regime de Bens</span><div class="fp-val">${V(f.regime)}</div></div>
-      <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_conj)}</div></div>
-      <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_conj)}</div></div>
-    </div>` : ''}
   </div>
 
-  <!-- DADOS COMPLEMENTARES -->
+  <!-- DADOS DO CÔNJUGE -->
+  <div class="fp-prop">
+    <div class="fp-ph">Cônjuge / Coproprietário(a)</div>
+    <div class="fp-pb">
+      <div class="fp-pr" style="grid-template-columns:2fr 1fr">
+        <div><span class="fp-lbl">Nome Completo</span><div class="fp-val">${V(f.nome_conj)}</div></div>
+        <div><span class="fp-lbl">Regime de Bens</span><div class="fp-val">${V(f.regime)}</div></div>
+      </div>
+      <div class="fp-pr" style="grid-template-columns:1fr 1fr 1fr 1fr">
+        <div><span class="fp-lbl">CPF</span><div class="fp-val"></div></div>
+        <div><span class="fp-lbl">RG</span><div class="fp-val"></div></div>
+        <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_conj)}</div></div>
+        <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_conj)}</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLEMENTAR -->
   <div class="fp-compl">
     <div>
-      <div style="font-size:7.5px;font-weight:700;text-transform:uppercase;margin-bottom:3px">Exclusividade</div>
+      <div class="fp-compl-lbl">Exclusividade</div>
       <div class="fp-mini">
-        <span class="fp-chk">${chk(f.exclusiv,'Sim')} Sim</span>
-        <span class="fp-chk">${chk(f.exclusiv,'Não')} Não</span>
+        <span class="fp-chk"><span class="fp-cm">${chk(f.exclusiv,'Sim')}</span> Sim</span>
+        <span class="fp-chk"><span class="fp-cm">${chk(f.exclusiv,'Não')}</span> Não</span>
       </div>
     </div>
     <div style="text-align:center">
-      <div style="font-size:7.5px;font-weight:700;text-transform:uppercase">Percentual de Comissão</div>
-      <div style="font-size:10px;font-weight:700;margin-top:2px">5% (CINCO POR CENTO)</div>
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:4px">Percentual de Comissão</div>
+      <div style="font-size:13px;font-weight:700">5% (CINCO POR CENTO)</div>
     </div>
     <div>
-      <div style="font-size:7px;color:#444">Teresina, _______ de ________________ de ${new Date().getFullYear()}</div>
+      <div style="font-size:9px;color:#333">Teresina, _______ de ________________________ de ${new Date().getFullYear()}</div>
     </div>
   </div>
 
+  <!-- LEGAL -->
   <div class="fp-legal">
-    O(a) proprietário(a) autoriza Luàna Guedes, CRECI-PI 4114, a oferecer, intermediar e divulgar o imóvel descrito nesta ficha em meios físicos e digitais, inclusive redes sociais, portais imobiliários, aplicativos de mensagens e placas. A comissão de 5% incidirá sobre o valor total da venda, sendo devida quando houver aceitação da proposta e recebimento de sinal. O(a) proprietário(a) declara que as informações prestadas são verdadeiras e que possui legitimidade para autorizar a comercialização do imóvel.
+    O(a) proprietário(a) autoriza Luàna Guedes, CRECI-PI 4114, a oferecer, intermediar e divulgar o imóvel descrito nesta ficha em meios físicos e digitais, inclusive redes sociais, portais imobiliários e placas. A comissão de 5% incidirá sobre o valor total da venda, sendo devida quando houver aceitação da proposta e recebimento de sinal. O(a) proprietário(a) declara que as informações prestadas são verdadeiras e que possui legitimidade para autorizar a comercialização do imóvel, respondendo civil e criminalmente por qualquer omissão ou falsidade.
   </div>
 
+  <!-- ASSINATURAS -->
   <div class="fp-sigs">
     <div>
       <div class="fp-sig-line"></div>
-      <div class="fp-sig-txt"><strong>Proprietário(a)</strong>&nbsp; Nome e assinatura</div>
+      <div class="fp-sig-txt"><strong>Proprietário(a)</strong><br>Nome por extenso e assinatura</div>
     </div>
     <div>
       <div class="fp-sig-line"></div>
-      <div class="fp-sig-txt"><strong>Luàna Guedes</strong>&nbsp; Corretora · CRECI-PI 4114</div>
+      <div class="fp-sig-txt"><strong>Luàna Guedes</strong><br>Corretora · CRECI-PI 4114</div>
     </div>
   </div>
 
-  <p style="text-align:center;font-size:7px;color:#555;margin-top:8px">
+  <p style="text-align:center;font-size:8px;color:#666;margin-top:10px">
     Ficha gerada em ${f.data || new Date().toLocaleDateString('pt-BR')} · Luàna Guedes Imóveis · CRECI-PI 4114
   </p>
 
