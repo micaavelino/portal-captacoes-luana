@@ -1036,6 +1036,7 @@ async function doSetup() {
 
 async function createAirtableTable(pat, baseId) {
   const fields = [
+    {name:'Name', type:'singleLineText'},
     {name:'status', type:'singleSelect', options:{choices:[
       {name:'Ativa',color:'greenLight1'},{name:'Vendida',color:'blueLight1'},{name:'Arquivada',color:'grayLight1'}
     ]}},
@@ -1437,6 +1438,7 @@ async function salvarCaptacao() {
   if (!nomeProp) { toast('Nome do proprietário é obrigatório.', 'err'); return; }
 
   const fields = {
+    Name: [(getRadio('tipo')||'Imóvel'), (txt('f-bairro')||''), new Date().toLocaleDateString('pt-BR')].filter(Boolean).join(' · '),
     status: 'Ativa',
     data_captacao: new Date().toISOString().split('T')[0],
     tipo: getRadio('tipo') || null,
