@@ -1723,7 +1723,7 @@ function printFicha(f, fmt, extras) {
   _pw.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Ficha — Luàna Guedes Imóveis</title><style>
 @page{margin:7mm;size:A4 portrait}
 *{box-sizing:border-box;margin:0;padding:0}
-body{zoom:.82;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.35}
+body{zoom:.80;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.35}
   .fp{width:100%}
   .fp-hdr{display:flex;align-items:center;justify-content:space-between;border:2px solid #000;padding:6px 12px;margin-bottom:5px}
   .fp-hdr-info{text-align:right;font-size:9.5px;line-height:1.7;font-weight:600}
@@ -1751,8 +1751,8 @@ body{zoom:.82;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height
   .fp-pr{display:grid;gap:5px;margin-bottom:5px}
   .fp-compl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:3px}
   .fp-legal{font-size:8.5px;line-height:1.65;border:1px solid #ccc;padding:6px 8px;margin-bottom:6px}
-  .fp-sigs{display:grid;grid-template-columns:1fr 1fr;gap:40px}
-  .fp-sig-line{border-bottom:1.5px solid #000;height:36px;margin-bottom:4px}
+  .fp-sigs{display:grid;grid-template-columns:1fr 1fr;gap:40px;break-inside:avoid;page-break-inside:avoid}
+  .fp-sig-line{border-bottom:1.5px solid #000;height:34px;margin-bottom:4px}
   .fp-sig-txt{font-size:9.5px;text-align:center;line-height:1.5}
 </style></head><body>
 <div class="fp">
@@ -2052,11 +2052,11 @@ body{zoom:.82;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height
     Teresina, _______ de ________________________________ de ___________
   </div>
   <div class="fp-sigs">
-    <div>
+    <div style="break-inside:avoid;page-break-inside:avoid">
       <div class="fp-sig-line"></div>
       <div class="fp-sig-txt"><strong>Proprietário(a)</strong><br>Nome por extenso e assinatura</div>
     </div>
-    <div>
+    <div style="break-inside:avoid;page-break-inside:avoid">
       <div class="fp-sig-line"></div>
       <div class="fp-sig-txt"><strong>Luàna Guedes</strong><br>Corretora · CRECI-PI 4114</div>
     </div>
