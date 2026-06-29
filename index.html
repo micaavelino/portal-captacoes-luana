@@ -1721,39 +1721,39 @@ function printFicha(f, fmt, extras) {
   const _pw = window.open('','_blank','menubar=no,toolbar=no,location=no,status=no');
   if(!_pw){alert('Habilite pop-ups para imprimir a ficha.');return;}
   _pw.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Ficha — Luàna Guedes Imóveis</title><style>
-@page{margin:7mm;size:A4 portrait}
+@page{margin:6mm;size:A4 portrait}
 *{box-sizing:border-box;margin:0;padding:0}
-body{zoom:.88;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.35}
+body{zoom:.76;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height:1.3}
   .fp{width:100%}
-  .fp-hdr{display:flex;align-items:center;justify-content:space-between;border:2px solid #000;padding:6px 12px;margin-bottom:6px}
-  .fp-hdr-info{text-align:right;font-size:9.5px;line-height:1.7;font-weight:600}
-  .fp-title{font-size:13px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:1px;background:#f2f2f2;border:1.5px solid #000;padding:6px;margin-bottom:7px}
-  .fp-id{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin-bottom:4px}
-  .fp-id2{display:grid;grid-template-columns:3fr 1fr;gap:6px;margin-bottom:7px}
+  .fp-hdr{display:flex;align-items:center;justify-content:space-between;border:2px solid #000;padding:5px 11px;margin-bottom:5px}
+  .fp-hdr-info{text-align:right;font-size:9.5px;line-height:1.6;font-weight:600}
+  .fp-title{font-size:13px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:1px;background:#f2f2f2;border:1.5px solid #000;padding:5px;margin-bottom:6px}
+  .fp-id{display:grid;grid-template-columns:2fr 1fr 1fr;gap:5px;margin-bottom:3px}
+  .fp-id2{display:grid;grid-template-columns:3fr 1fr;gap:5px;margin-bottom:6px}
   .fp-lbl{font-size:8px;font-weight:700;text-transform:uppercase;color:#333;display:block;margin-bottom:1px;letter-spacing:.2px}
-  .fp-val{border-bottom:2px solid #555;min-height:20px;font-size:11px;padding:1px 0}
-  .fp-val-sm{border-bottom:2px solid #555;min-height:18px;font-size:11px;padding:1px 0}
-  .fp-body{display:grid;grid-template-columns:58% 42%;gap:7px;margin-bottom:7px;align-items:start}
-  .fp-sec{border:1px solid #444;margin-bottom:5px;break-inside:avoid}
-  .fp-sh{background:#555;color:#fff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:4px 7px}
-  .fp-sb{padding:5px 7px 6px}
-  .fp-chk{font-size:10.5px;line-height:2;white-space:nowrap;display:flex;align-items:center;gap:4px}
-  .fp-cm{font-size:15px;line-height:1;display:inline-block;vertical-align:middle}
+  .fp-val{border-bottom:1.5px solid #555;min-height:18px;font-size:11px;padding:1px 0}
+  .fp-val-sm{border-bottom:1.5px solid #555;min-height:16px;font-size:11px;padding:0}
+  .fp-body{display:grid;grid-template-columns:58% 42%;gap:6px;margin-bottom:6px;align-items:start}
+  .fp-sec{border:1px solid #444;margin-bottom:4px;break-inside:avoid}
+  .fp-sh{background:#555;color:#fff;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:3px 6px}
+  .fp-sb{padding:4px 6px 5px}
+  .fp-chk{font-size:10.5px;line-height:1.85;white-space:nowrap;display:flex;align-items:center;gap:4px}
+  .fp-cm{font-size:14px;line-height:1;display:inline-block;vertical-align:middle}
   .fp-g2{display:grid;grid-template-columns:1fr 1fr}
   .fp-g3{display:grid;grid-template-columns:1fr 1fr 1fr}
-  .fp-mini{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:3px}
-  .fp-igr{display:grid;gap:4px;margin-bottom:4px}
-  .fp-sep{border-top:1px dashed #bbb;margin:5px 0 4px;padding-top:4px}
-  .fp-obs-ln{border-bottom:1.5px solid #999;min-height:20px;margin-bottom:5px}
-  .fp-prop{border:1.5px solid #333;margin-bottom:6px}
-  .fp-ph{background:#222;color:#fff;font-size:9.5px;font-weight:700;text-transform:uppercase;padding:4px 8px;letter-spacing:.3px}
-  .fp-pb{padding:6px 8px}
-  .fp-pr{display:grid;gap:5px;margin-bottom:5px}
-  .fp-compl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
-  .fp-legal{font-size:8px;line-height:1.65;border:1px solid #ccc;padding:7px;margin-bottom:7px}
+  .fp-mini{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:2px}
+  .fp-igr{display:grid;gap:3px;margin-bottom:3px}
+  .fp-sep{border-top:1px dashed #bbb;margin:4px 0 3px;padding-top:3px}
+  .fp-obs-ln{border-bottom:1.5px solid #999;min-height:20px;margin-bottom:4px}
+  .fp-prop{border:1.5px solid #333;margin-bottom:5px}
+  .fp-ph{background:#222;color:#fff;font-size:9px;font-weight:700;text-transform:uppercase;padding:3px 7px;letter-spacing:.3px}
+  .fp-pb{padding:5px 7px}
+  .fp-pr{display:grid;gap:4px;margin-bottom:4px}
+  .fp-compl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;margin-bottom:3px}
+  .fp-legal{font-size:7.5px;line-height:1.6;border:1px solid #ccc;padding:6px;margin-bottom:6px}
   .fp-sigs{display:grid;grid-template-columns:1fr 1fr;gap:40px}
-  .fp-sig-line{border-bottom:1.5px solid #000;height:38px;margin-bottom:4px}
-  .fp-sig-txt{font-size:9.5px;text-align:center;line-height:1.5}
+  .fp-sig-line{border-bottom:1.5px solid #000;height:28px;margin-bottom:3px}
+  .fp-sig-txt{font-size:9px;text-align:center;line-height:1.4}
 </style></head><body>
 <div class="fp">
 
@@ -1873,10 +1873,6 @@ body{zoom:.88;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height
             <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Energia solar')}</span> Energia Solar</div>
             <div class="fp-chk"><span class="fp-cm">${cA(ambArr,'Elevador privativo')}</span> Elevador Privativo</div>
           </div>
-          <div style="margin-top:5px">
-            <div class="fp-obs-ln"></div>
-            <div class="fp-obs-ln"></div>
-          </div>
         </div>
       </div>
 
@@ -1893,10 +1889,6 @@ body{zoom:.88;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height
             <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Coworking')}</span> Coworking</div>
             <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Portaria 24h')}</span> Portaria 24h</div>
             <div class="fp-chk"><span class="fp-cm">${cA(lazArr,'Gerador')}</span> Gerador</div>
-          </div>
-          <div style="margin-top:5px">
-            <div class="fp-obs-ln"></div>
-            <div class="fp-obs-ln"></div>
           </div>
         </div>
       </div>
@@ -1997,15 +1989,13 @@ body{zoom:.88;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height
           <div class="fp-obs-ln">${V(f.obs_geral)}</div>
           <div class="fp-obs-ln"></div>
           <div class="fp-obs-ln"></div>
-          <div class="fp-obs-ln"></div>
-          <div class="fp-obs-ln"></div>
         </div>
       </div>
 
     </div><!-- /col direita -->
   </div><!-- /fp-body -->
 
-  <!-- DADOS DO PROPRIETÁRIO -->
+  <!-- DADOS DO PROPRIETÁRIO + CÔNJUGE -->
   <div class="fp-prop">
     <div class="fp-ph">Dados do Proprietário</div>
     <div class="fp-pb">
@@ -2014,28 +2004,24 @@ body{zoom:.88;font-family:Arial,sans-serif;font-size:11px;color:#000;line-height
         <div><span class="fp-lbl">Profissão</span><div class="fp-val">${V(f.prof_prop)}</div></div>
         <div><span class="fp-lbl">Estado Civil</span><div class="fp-val">${V(f.est_civil)}</div></div>
       </div>
-      <div class="fp-pr" style="grid-template-columns:1fr 1fr 1fr 2fr">
+      <div class="fp-pr" style="grid-template-columns:1fr 1fr 1fr 2fr;margin-bottom:6px">
         <div><span class="fp-lbl">CPF</span><div class="fp-val">${V(f.cpf_prop)}</div></div>
         <div><span class="fp-lbl">RG</span><div class="fp-val">${V(f.rg_prop)}</div></div>
         <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_prop)}</div></div>
         <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_prop)}</div></div>
       </div>
-    </div>
-  </div>
-
-  <!-- DADOS DO CÔNJUGE -->
-  <div class="fp-prop">
-    <div class="fp-ph">Cônjuge / Coproprietário(a)</div>
-    <div class="fp-pb">
-      <div class="fp-pr" style="grid-template-columns:2fr 1fr">
-        <div><span class="fp-lbl">Nome Completo</span><div class="fp-val">${V(f.nome_conj)}</div></div>
-        <div><span class="fp-lbl">Regime de Bens</span><div class="fp-val">${V(f.regime)}</div></div>
-      </div>
-      <div class="fp-pr" style="grid-template-columns:1fr 1fr 1fr 1fr">
-        <div><span class="fp-lbl">CPF</span><div class="fp-val"></div></div>
-        <div><span class="fp-lbl">RG</span><div class="fp-val"></div></div>
-        <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_conj)}</div></div>
-        <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_conj)}</div></div>
+      <div style="border-top:1px solid #555;padding-top:5px;margin-top:2px">
+        <div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#555;margin-bottom:3px">Cônjuge / Coproprietário(a)</div>
+        <div class="fp-pr" style="grid-template-columns:2fr 1fr 1fr 1fr;margin-bottom:3px">
+          <div><span class="fp-lbl">Nome Completo</span><div class="fp-val">${V(f.nome_conj)}</div></div>
+          <div><span class="fp-lbl">Regime de Bens</span><div class="fp-val">${V(f.regime)}</div></div>
+          <div><span class="fp-lbl">CPF</span><div class="fp-val"></div></div>
+          <div><span class="fp-lbl">RG</span><div class="fp-val"></div></div>
+        </div>
+        <div class="fp-pr" style="grid-template-columns:1fr 2fr">
+          <div><span class="fp-lbl">Telefone</span><div class="fp-val">${V(f.tel_conj)}</div></div>
+          <div><span class="fp-lbl">E-mail</span><div class="fp-val">${V(f.email_conj)}</div></div>
+        </div>
       </div>
     </div>
   </div>
