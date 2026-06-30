@@ -1204,12 +1204,23 @@ function switchTab(name) {
     kw.stChg=function(v){var dw=kd.getElementById('st-dw');if(dw)dw.style.display=(v===1||v==='1')?'block':'none';};
     kw.stSave=function(){
       if(!kw._spRef)return;
+      var _ref=kw._spRef;
       var r=kd.querySelector('input[name="st-r"]:checked');
       var si=r?parseInt(r.value):0;
       var dt=(kd.getElementById('st-di')||{}).value||'';
       var obs=(kd.getElementById('st-oi')||{}).value||'';
-      kw.tracking[kw._spRef]={s:si,dt:si===1?dt:'',obs:obs};
+      kw.tracking[_ref]={s:si,dt:si===1?dt:'',obs:obs};
       kw.saveTrk();kw.closeStatusPop();kw.render();
+      // Atualiza badge na modal se estiver aberta
+      var _m=kd.getElementById('_modal');
+      if(_m){
+        var _t=kw.getTrk(_ref);
+        var _sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
+        var _sC=['st-0','st-1','st-2','st-3'];
+        var _b=_m.querySelector('._st_mb');
+        if(_b){_b.className='st-badge _st_mb '+_sC[_t.s];_b.textContent=_sL[_t.s]+(_t.s===1&&_t.dt?' ('+_t.dt.substring(5)+')':'')+' ▾';}
+        var _o=_m.querySelector('._st_mo');if(_o)_o.textContent=_t.obs||'';
+      }
     };
     kw.closeStatusPop=function(){var p=kd.getElementById('st-pop');if(p)p.remove();kw._spRef=null;};
     kd.addEventListener('click',function(e){
@@ -1271,6 +1282,33 @@ function switchTab(name) {
         var r=c.getAttribute('data-ref');
         c.style.display=(kw._stF===''||kw.getTrk(r).s===parseInt(kw._stF))?'':'none';
       });
+    }
+
+    // ── Patch OM: injetar status na modal ao abrir ──
+    if(kw.OM&&!kw._origOM){
+      kw._origOM=kw.OM;
+      kw.OM=function(card){
+        kw._origOM.call(kw,card);
+        var ref=card?card.getAttribute('data-ref'):null;if(!ref)return;
+        var modal=kd.getElementById('_modal');if(!modal)return;
+        var t=kw.getTrk(ref);
+        var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
+        var sC=['st-0','st-1','st-2','st-3'];
+        var sec=kd.createElement('div');
+        sec.style.cssText='padding:8px 16px 10px;border-top:1px solid #2a2a32;display:flex;align-items:center;gap:10px;flex-wrap:wrap;';
+        var lbl=kd.createElement('span');
+        lbl.style.cssText='color:#888;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;min-width:52px;';
+        lbl.textContent='Status';
+        sec.appendChild(lbl);
+        var btn=kd.createElement('button');
+        btn.className='st-badge _st_mb '+sC[t.s];
+        btn.textContent=sL[t.s]+(t.s===1&&t.dt?' ('+t.dt.substring(5)+')':'')+' ▾';
+        (function(r,b){b.addEventListener('click',function(e){e.stopPropagation();kw.STP(r,e);});})(ref,btn);
+        sec.appendChild(btn);
+        if(t.obs){var obsEl=kd.createElement('span');obsEl.className='_st_mo';obsEl.style.cssText='font-size:12px;color:#aaa;font-style:italic;';obsEl.textContent=t.obs;sec.appendChild(obsEl);}
+        var mh=modal.querySelector('.modal-header');
+        if(mh)mh.parentNode.insertBefore(sec,mh.nextSibling);
+      };
     }
 
     // ── First render with patched mkC ──
