@@ -1217,24 +1217,32 @@ function switchTab(name) {
       if(p&&!p.contains(e.target)&&!e.target.classList.contains('st-badge'))kw.closeStatusPop();
     });
 
-    // ── Patch mkC ──
-    kw._origMkC=kw.mkC;
-    kw.mkC=function(p){
-      var html=kw._origMkC(p);
-      var refEsc=(p.ref||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      var t=kw.getTrk(p.ref||'');
+    // ── Add badges via DOM (after each render) ──
+    function _addBadges(){
+      var g=kd.getElementById('grid');if(!g)return;
       var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
       var sC=['st-0','st-1','st-2','st-3'];
-      var badge='<button class="st-badge '+sC[t.s]+'" onclick="event.stopPropagation();STP(\''+refEsc+'\',event)">'+sL[t.s]+(t.s===1&&t.dt?' ('+t.dt.substring(5)+')':'')+' ▾</button>';
-      var li=html.lastIndexOf('</div></div>');
-      if(li>=0)html=html.substring(0,li)+badge+'</div></div>';
-      return html;
-    };
+      g.querySelectorAll('.card').forEach(function(card){
+        if(card.querySelector('.st-badge'))return; // already added
+        var ref=card.getAttribute('data-ref');if(!ref)return;
+        var t=kw.getTrk(ref);
+        var btn=kd.createElement('button');
+        btn.className='st-badge '+sC[t.s];
+        btn.textContent=sL[t.s]+(t.s===1&&t.dt?' ('+t.dt.substring(5)+')':'')+' ▾';
+        (function(r){
+          btn.addEventListener('click',function(e){e.stopPropagation();kw.STP(r,e);});
+        })(ref);
+        var cf=card.querySelector('.cfoot');
+        if(cf){cf.style.flexWrap='wrap';cf.style.gap='4px';cf.appendChild(btn);}
+        else{card.appendChild(btn);}
+      });
+    }
 
-    // ── Patch render to auto-reapply status filter ──
+    // ── Patch render: add badges + reapply filter after each render ──
     kw._origRender=kw.render;
     kw.render=function(){
       kw._origRender();
+      _addBadges();
       _reapplyF();
     };
 
