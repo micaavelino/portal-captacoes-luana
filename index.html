@@ -1161,6 +1161,126 @@ function switchTab(name) {
   }
 }
 
+// ─── KENLO TRACKING INJECTION ────────────────────────────────
+(function(){
+  function _inject(){
+    var fr=document.getElementById('kenlo-frame');
+    if(!fr)return;
+    var kw=fr.contentWindow,kd=fr.contentDocument;
+    if(!kw||!kd||!kw.mkC)return;
+    if(typeof kw.getTrk==='function')return; // already has tracking
+
+    // ── CSS ──
+    var s=kd.createElement('style');
+    s.textContent='.st-badge{border:none;border-radius:20px;padding:3px 9px;font-size:11px;cursor:pointer;font-weight:600;line-height:1.4;white-space:nowrap;transition:.15s;flex-shrink:0;margin-top:4px}.st-badge:hover{opacity:.8}.st-0{background:#2a2a32;color:#888}.st-1{background:#4a3d0a;color:#f5d363}.st-2{background:#0d2e12;color:#4caf50}.st-3{background:#0d1e30;color:#64b5f6}.st-pop{position:fixed;z-index:10000;background:#1e1e28;border:1px solid #3a3a4a;border-radius:10px;padding:14px;width:230px;box-shadow:0 8px 32px rgba(0,0,0,.7)}.st-pop h4{font-size:11px;color:#ccb363;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}.st-pop label{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:7px;cursor:pointer;color:#e8e6e0}.st-pop input[type=radio]{accent-color:#ccb363;width:14px;height:14px}.st-date{width:100%;margin:4px 0 8px;background:#1a1a22;border:1px solid #3a3a4a;color:#e8e6e0;border-radius:6px;padding:5px 8px;font-size:12px}.st-obs{width:100%;min-height:52px;background:#1a1a22;border:1px solid #3a3a4a;color:#e8e6e0;border-radius:6px;padding:5px 8px;font-size:12px;resize:vertical;margin:4px 0 8px;font-family:inherit}.st-btns{display:flex;gap:6px}.st-save{flex:1;padding:7px;border-radius:6px;border:none;font-size:12px;cursor:pointer;font-weight:700;background:#ccb363;color:#000}.st-cancel{flex:1;padding:7px;border-radius:6px;border:1px solid #444;font-size:12px;cursor:pointer;background:transparent;color:#888}.sf-strip{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:#0d0d0f;border-bottom:1px solid #2a2a32}.sf-btn{background:#1e1e24;border:1px solid #2a2a32;color:#888;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;transition:.15s}.sf-btn:hover{border-color:#ccb363;color:#ccb363}.sf-btn.sf-active{background:#ccb363;color:#000;border-color:#ccb363}';
+    kd.head.appendChild(s);
+
+    // ── Tracking data ──
+    var _esc=function(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');};
+    kw.tracking={};
+    try{var _t=localStorage.getItem('lgi_tracking');if(_t)kw.tracking=JSON.parse(_t);}catch(e){}
+    kw.saveTrk=function(){try{localStorage.setItem('lgi_tracking',JSON.stringify(kw.tracking));}catch(e){}};
+    kw.getTrk=function(ref){return kw.tracking[ref]||{s:0,dt:'',obs:''};};
+    kw._spRef=null;kw._stF='';
+
+    // ── Popover ──
+    kw.STP=function(ref,evt){
+      evt.stopPropagation();
+      var t=kw.getTrk(ref);
+      kw.closeStatusPop();kw._spRef=ref;
+      var d=kd.createElement('div');d.id='st-pop';d.className='st-pop';
+      var sL=['⚪ Pendente','🟡 Retornar em…','🟢 Contatado','🔵 Captado'];
+      var radios=sL.map(function(l,i){return '<label><input type="radio" name="st-r" value="'+i+'"'+(t.s===i?' checked':'')+' onchange="stChg('+i+')"> '+l+'</label>';}).join('');
+      d.innerHTML='<h4>'+_esc(ref)+'</h4>'+radios
+        +'<div id="st-dw" style="display:'+(t.s===1?'block':'none')+'"><input type="date" class="st-date" id="st-di" value="'+_esc(t.dt||'')+'"></div>'
+        +'<textarea class="st-obs" id="st-oi" placeholder="Observações…">'+_esc(t.obs||'')+'</textarea>'
+        +'<div class="st-btns"><button class="st-save" onclick="stSave()">Salvar</button><button class="st-cancel" onclick="closeStatusPop()">Cancelar</button></div>';
+      kd.body.appendChild(d);
+      var left=Math.min(evt.clientX,kw.innerWidth-244);
+      var top=evt.clientY+12;
+      if(top+280>kw.innerHeight)top=evt.clientY-285;
+      d.style.left=left+'px';d.style.top=top+'px';
+    };
+    kw.stChg=function(v){var dw=kd.getElementById('st-dw');if(dw)dw.style.display=(v===1||v==='1')?'block':'none';};
+    kw.stSave=function(){
+      if(!kw._spRef)return;
+      var r=kd.querySelector('input[name="st-r"]:checked');
+      var si=r?parseInt(r.value):0;
+      var dt=(kd.getElementById('st-di')||{}).value||'';
+      var obs=(kd.getElementById('st-oi')||{}).value||'';
+      kw.tracking[kw._spRef]={s:si,dt:si===1?dt:'',obs:obs};
+      kw.saveTrk();kw.closeStatusPop();kw.render();
+    };
+    kw.closeStatusPop=function(){var p=kd.getElementById('st-pop');if(p)p.remove();kw._spRef=null;};
+    kd.addEventListener('click',function(e){
+      var p=kd.getElementById('st-pop');
+      if(p&&!p.contains(e.target)&&!e.target.classList.contains('st-badge'))kw.closeStatusPop();
+    });
+
+    // ── Patch mkC ──
+    kw._origMkC=kw.mkC;
+    kw.mkC=function(p){
+      var html=kw._origMkC(p);
+      var refEsc=(p.ref||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var t=kw.getTrk(p.ref||'');
+      var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
+      var sC=['st-0','st-1','st-2','st-3'];
+      var badge='<button class="st-badge '+sC[t.s]+'" onclick="event.stopPropagation();STP(\''+refEsc+'\',event)">'+sL[t.s]+(t.s===1&&t.dt?' ('+t.dt.substring(5)+')':'')+' ▾</button>';
+      var li=html.lastIndexOf('</div></div>');
+      if(li>=0)html=html.substring(0,li)+badge+'</div></div>';
+      return html;
+    };
+
+    // ── Patch render to auto-reapply status filter ──
+    kw._origRender=kw.render;
+    kw.render=function(){
+      kw._origRender();
+      _reapplyF();
+    };
+
+    // ── sf-strip before grid ──
+    if(!kd.getElementById('_lgi_sf')){
+      var sf=kd.createElement('div');sf.id='_lgi_sf';sf.className='sf-strip';
+      sf.innerHTML='<button class="sf-btn sf-active" onclick="STF(this,\'\')">Todos</button>'
+        +'<button class="sf-btn" onclick="STF(this,\'0\')">⚪ Pendentes</button>'
+        +'<button class="sf-btn" onclick="STF(this,\'1\')">🟡 Retornar</button>'
+        +'<button class="sf-btn" onclick="STF(this,\'2\')">🟢 Contatados</button>'
+        +'<button class="sf-btn" onclick="STF(this,\'3\')">🔵 Captados</button>';
+      var grid=kd.getElementById('grid');
+      if(grid)grid.parentNode.insertBefore(sf,grid);
+    }
+
+    // ── Status filter via card visibility ──
+    kw.STF=function(btn,v){
+      kw._stF=v;
+      kd.querySelectorAll('.sf-btn').forEach(function(b){b.classList.remove('sf-active');});
+      if(btn)btn.classList.add('sf-active');
+      _reapplyF();
+    };
+    function _reapplyF(){
+      var g=kd.getElementById('grid');if(!g)return;
+      g.querySelectorAll('.card').forEach(function(c){
+        var r=c.getAttribute('data-ref');
+        c.style.display=(kw._stF===''||kw.getTrk(r).s===parseInt(kw._stF))?'':'none';
+      });
+    }
+
+    // ── First render with patched mkC ──
+    kw.render();
+  }
+
+  var _kfr=document.getElementById('kenlo-frame');
+  if(_kfr){
+    _kfr.addEventListener('load',function(){setTimeout(_inject,200);});
+    // In case iframe already loaded (e.g. fast cache)
+    try{
+      if(_kfr.contentDocument&&_kfr.contentDocument.readyState==='complete'&&_kfr.contentWindow&&_kfr.contentWindow.mkC){
+        setTimeout(_inject,200);
+      }
+    }catch(e){}
+  }
+})();
+
 // ─── AIRTABLE API ─────────────────────────────────────────
 const AT = {
   url(path='') { return `https://api.airtable.com/v0/${S.baseId}/${encodeURIComponent(TABLE)}${path}`; },
