@@ -278,7 +278,7 @@ textarea.inp{resize:vertical;min-height:72px}
 ═══════════════════════════════════════════════════════ -->
 <div id="s-app" style="display:none;flex-direction:column;min-height:100vh">
 
-  <!-- Header  -->
+  <!-- Header -->
   <header class="hdr">
     <div class="hdr-logo"><img src="logo.svg" alt="Luàna Guedes Imóveis" style="height:26px;vertical-align:middle"></div>
     <div class="hdr-space"></div>
@@ -290,7 +290,7 @@ textarea.inp{resize:vertical;min-height:72px}
   <nav class="tabs">
     <div class="tab on" onclick="switchTab('list')">📋 Captações</div>
     <div class="tab" onclick="switchTab('form')">➕ Nova Captação</div>
-    <div class="tab" onclick="switchTab('kenlo')">🔍 Kenlo (Thiago Garcia)</div>
+    <div class="tab" onclick="switchTab('kenlo')">🔍 Antigos</div>
   </nav>
 
   <!-- ── TAB: LISTA DE CAPTAÇÕES ───────────────────── -->
@@ -917,7 +917,7 @@ textarea.inp{resize:vertical;min-height:72px}
 <!-- PRINT AREA -->
 <div id="print-area"></div>
 
-<!-- TOAST  -->
+<!-- TOAST -->
 <div id="toast"></div>
 
 <!-- ══════════════════════════════════════════════════════
@@ -954,7 +954,7 @@ async function doLogin() {
 
   const hash = await sha256(pwd);
 
-  // Acesso automatico - configura credenciais ao logar
+  // Acesso automático — configura credenciais ao logar
   const _LH = 'd2ff02bd1e55d08afae802080455030b26c9599e8243a4e2fb606ee34105c350';
   if (hash === _LH) {
     if (!S.pat) {
@@ -1186,7 +1186,7 @@ function switchTab(name) {
 
     // ── CSS ──
     var s=kd.createElement('style');
-    s.textContent='.st-badge{border:none;border-radius:20px;padding:3px 9px;font-size:11px;cursor:pointer;font-weight:600;line-height:1.4;white-space:nowrap;transition:.15s;flex-shrink:0;margin-top:4px}.st-badge:hover{opacity:.8}.st-0{background:#2a2a32;color:#888}.st-1{background:#4a3d0a;color:#f5d363}.st-2{background:#0d2e12;color:#4caf50}.st-3{background:#0d1e30;color:#64b5f6}.st-pop{position:fixed;z-index:10000;background:#1e1e28;border:1px solid #3a3a4a;border-radius:10px;padding:14px;width:230px;box-shadow:0 8px 32px rgba(0,0,0,.7)}.st-pop h4{font-size:11px;color:#ccb363;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}.st-pop label{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:7px;cursor:pointer;color:#e8e6e0}.st-pop input[type=radio]{accent-color:#ccb363;width:14px;height:14px}.st-date{width:100%;margin:4px 0 8px;background:#1a1a22;border:1px solid #3a3a4a;color:#e8e6e0;border-radius:6px;padding:5px 8px;font-size:12px}.st-obs{width:100%;min-height:52px;background:#1a1a22;border:1px solid #3a3a4a;color:#e8e6e0;border-radius:6px;padding:5px 8px;font-size:12px;resize:vertical;margin:4px 0 8px;font-family:inherit}.st-btns{display:flex;gap:6px}.st-save{flex:1;padding:7px;border-radius:6px;border:none;font-size:12px;cursor:pointer;font-weight:700;background:#ccb363;color:#000}.st-cancel{flex:1;padding:7px;border-radius:6px;border:1px solid #444;font-size:12px;cursor:pointer;background:transparent;color:#888}.sf-strip{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:#0d0d0f;border-bottom:1px solid #2a2a32}.sf-btn{background:#1e1e24;border:1px solid #2a2a32;color:#888;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;transition:.15s}.sf-btn:hover{border-color:#ccb363;color:#ccb363}.sf-btn.sf-active{background:#ccb363;color:#000;border-color:#ccb363}';
+    s.textContent='.st-badge{border:none;border-radius:20px;padding:3px 9px;font-size:11px;cursor:pointer;font-weight:600;line-height:1.4;white-space:nowrap;transition:.15s;flex-shrink:0;margin-top:4px}.st-badge:hover{opacity:.8}.st-0{background:#2a2a32;color:#888}.st-1{background:#4a3d0a;color:#f5d363}.st-2{background:#0d2e12;color:#4caf50}.st-3{background:#0d1e30;color:#64b5f6}.st-4{background:#2e0d0d;color:#ef5350}.st-pop{position:fixed;z-index:10000;background:#1e1e28;border:1px solid #3a3a4a;border-radius:10px;padding:14px;width:230px;box-shadow:0 8px 32px rgba(0,0,0,.7)}.st-pop h4{font-size:11px;color:#ccb363;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}.st-pop label{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:7px;cursor:pointer;color:#e8e6e0}.st-pop input[type=radio]{accent-color:#ccb363;width:14px;height:14px}.st-date{width:100%;margin:4px 0 8px;background:#1a1a22;border:1px solid #3a3a4a;color:#e8e6e0;border-radius:6px;padding:5px 8px;font-size:12px}.st-obs{width:100%;min-height:52px;background:#1a1a22;border:1px solid #3a3a4a;color:#e8e6e0;border-radius:6px;padding:5px 8px;font-size:12px;resize:vertical;margin:4px 0 8px;font-family:inherit}.st-btns{display:flex;gap:6px}.st-save{flex:1;padding:7px;border-radius:6px;border:none;font-size:12px;cursor:pointer;font-weight:700;background:#ccb363;color:#000}.st-cancel{flex:1;padding:7px;border-radius:6px;border:1px solid #444;font-size:12px;cursor:pointer;background:transparent;color:#888}.sf-strip{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:#0d0d0f;border-bottom:1px solid #2a2a32}.sf-btn{background:#1e1e24;border:1px solid #2a2a32;color:#888;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;transition:.15s}.sf-btn:hover{border-color:#ccb363;color:#ccb363}.sf-btn.sf-active{background:#ccb363;color:#000;border-color:#ccb363}';
     kd.head.appendChild(s);
 
     // ── Tracking data ──
@@ -1203,7 +1203,7 @@ function switchTab(name) {
       var t=kw.getTrk(ref);
       kw.closeStatusPop();kw._spRef=ref;
       var d=kd.createElement('div');d.id='st-pop';d.className='st-pop';
-      var sL=['⚪ Pendente','🟡 Retornar em…','🟢 Contatado','🔵 Captado'];
+      var sL=['⚪ Pendente','🟡 Retornar em…','🟢 Contatado','🔵 Captado','🔴 Já vendido'];
       var radios=sL.map(function(l,i){return '<label><input type="radio" name="st-r" value="'+i+'"'+(t.s===i?' checked':'')+' onchange="stChg('+i+')"> '+l+'</label>';}).join('');
       d.innerHTML='<h4>'+_esc(ref)+'</h4>'+radios
         +'<div id="st-dw" style="display:'+(t.s===1?'block':'none')+'"><input type="date" class="st-date" id="st-di" value="'+_esc(t.dt||'')+'"></div>'
@@ -1229,8 +1229,8 @@ function switchTab(name) {
       var _m=kd.getElementById('_modal');
       if(_m){
         var _t=kw.getTrk(_ref);
-        var _sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
-        var _sC=['st-0','st-1','st-2','st-3'];
+        var _sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado','🔴 Já vendido'];
+        var _sC=['st-0','st-1','st-2','st-3','st-4'];
         var _b=_m.querySelector('._st_mb');
         if(_b){_b.className='st-badge _st_mb '+_sC[_t.s];_b.textContent=_sL[_t.s]+(_t.s===1&&_t.dt?' ('+_t.dt.substring(5)+')':'')+' ▾';}
         var _o=_m.querySelector('._st_mo');if(_o)_o.textContent=_t.obs||'';
@@ -1245,8 +1245,8 @@ function switchTab(name) {
     // ── Add badges via DOM (after each render) ──
     function _addBadges(){
       var g=kd.getElementById('grid');if(!g)return;
-      var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
-      var sC=['st-0','st-1','st-2','st-3'];
+      var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado','🔴 Já vendido'];
+      var sC=['st-0','st-1','st-2','st-3','st-4'];
       g.querySelectorAll('.card').forEach(function(card){
         if(card.querySelector('.st-badge'))return; // already added
         var ref=card.getAttribute('data-ref');if(!ref)return;
@@ -1278,7 +1278,8 @@ function switchTab(name) {
         +'<button class="sf-btn" onclick="STF(this,\'0\')">⚪ Pendentes</button>'
         +'<button class="sf-btn" onclick="STF(this,\'1\')">🟡 Retornar</button>'
         +'<button class="sf-btn" onclick="STF(this,\'2\')">🟢 Contatados</button>'
-        +'<button class="sf-btn" onclick="STF(this,\'3\')">🔵 Captados</button>';
+        +'<button class="sf-btn" onclick="STF(this,\'3\')">🔵 Captados</button>'
+        +'<button class="sf-btn" onclick="STF(this,\'4\')">🔴 Já vendidos</button>';
       var grid=kd.getElementById('grid');
       if(grid)grid.parentNode.insertBefore(sf,grid);
     }
@@ -1306,8 +1307,8 @@ function switchTab(name) {
         var ref=card?card.getAttribute('data-ref'):null;if(!ref)return;
         var modal=kd.getElementById('_modal');if(!modal)return;
         var t=kw.getTrk(ref);
-        var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado'];
-        var sC=['st-0','st-1','st-2','st-3'];
+        var sL=['⚪ Pendente','🟡 Retornar','🟢 Contatado','🔵 Captado','🔴 Já vendido'];
+        var sC=['st-0','st-1','st-2','st-3','st-4'];
         var sec=kd.createElement('div');
         sec.style.cssText='padding:8px 16px 10px;border-top:1px solid #2a2a32;display:flex;align-items:center;gap:10px;flex-wrap:wrap;';
         var lbl=kd.createElement('span');
